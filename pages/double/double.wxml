@@ -1,0 +1,99 @@
+<view class="page" hidden="{{map}}">
+	<map class="wap" latitude="{{latitude}}" longitude="{{longitude}}" scale="18"  markers="{{markers}}" show-location polyline="{{polyline}}">
+		<cover-view class="info">相距1444米</cover-view>
+		<cover-image class="sos" mode="widthFix" src="{{img}}sos.png"></cover-image>
+		<cover-image class="location" mode="widthFix" src="{{img}}location.png"></cover-image>
+		<cover-image class="compass" mode="widthFix" src="{{img}}compass.png"></cover-image>
+		<cover-view class="ruler">
+			<cover-view class="big" bindtap="big">+</cover-view>
+			<cover-view class="space"></cover-view>
+			<cover-view class="small" bindtap="small">-</cover-view>
+		</cover-view>		
+	</map>
+	<view class="iframe">
+		<view class="invitation" hidden="{{invitation}}"><!-- {{invitation}} -->
+			<view class="picture" bindtap="inviteUser" hidden="{{state}}">
+				<!-- <button  bindtap="inviteUser"> -->
+				<image mode="widthFix" src="{{img}}invitation.png" data-state="{{state}}" ></image>
+			<!-- </button> -->
+				<view class="state">点击头像邀请</view>
+			</view>
+			<view class="picture" bindtap="cancel" hidden="{{!state}}">
+				<!-- <button  bindtap="inviteUser"> -->
+				<image mode="widthFix" src="{{img}}invitation.png" data-state="{{state}}" ></image>
+			<!-- </button> -->
+				<view class="state">邀请中···</view>
+			</view>
+
+		</view>
+		<!-- <view class="invitation" hidden="">
+			<view class="picture" bindtap="cancel" hidden="{{!state}}">
+				<image mode="widthFix" src="{{img}}invitation.png" data-state="{{state}}" ></image>
+				<view class="state">邀请中···</view>
+			</view>
+		</view> -->
+		<!-- 聊天部件 -->
+		<view class="talking" hidden="1">
+			<scroll-view scroll-y   class="chatRoom"  bindtap="talk" scroll-into-view="id-{{moveTo}}">
+				<view wx:for="{{msgList}}"  class="msg {{item.cls == 'left' ? 'just_left' : 'just_right'}}">
+					<view class="user_img  {{item.cls == 'left' ? 'order_left' : 'order_right'}}" >
+						<image style="width:100%;" wx:if="{{item.cls == 'left'}}" mode="widthFix" src="{{UserInfo[0].img}}"></image>
+						<image style="width:100%;" wx:if="{{item.cls == 'right'}}" mode="widthFix" src="{{UserInfo[1].img}}"></image>
+					</view>
+					<view class="talk_box {{item.cls == 'left'?'talk_left':'talk_right'}}" id="id-{{index}}">
+						<!-- <image src="http://p.m.fans-me.com/geographyImg/answer_bg2.png" bindtap="test">1</image> -->
+						<!-- 判断消息类型 -->
+						<!-- <view  > -->
+							<text wx:if="{{item.type=='text'}}">{{item.msg}}</text>
+							<image wx:if="{{item.type=='picture'}}" class="msg_img" mode="widthFix" src="{{item.msg}}" bindtap="previewImage" data-src="{{item.msg}}" ></image>
+							<video wx:if="{{item.type=='video'}}" src="{{item.msg}}" ></video>
+							<audio style="width:300rpx; height:150rpx;" id="myAudio" wx:if="{{item.type=='audio'}}" src="{{item.msg}}" data-src="{{item.msg}}" bindtap="playVoice"></audio>
+						<!-- </view> -->
+						<!-- <view wx:if="{{item.type=='picture'}}" ><image class="msg_img" mode="widthFix" src="{{item.msg}}" bindtap="previewImage" data-src="{{item.msg}}"></image></view> -->
+						<!-- <view wx:if="{{item.type=='video'}}" ><video></video></view> -->
+					</view>
+				</view>
+			</scroll-view>
+			<view class="tab">
+				<view class="end">
+					<image class="close" mode="widthFix" src="{{img}}close.png" data-box="close_box" bindtap="hiddenBox"></image>
+					<!-- 关闭聊天 -->
+					<view class="close_box" hidden="{{box.close_box}}">
+						<view class="meeted">已经相遇</view>
+						<image class="space" mode="widthFix" src="{{img}}space.png" lazy-load hover-start-time="2000"></image>
+						<view class="meeted">结束聊天</view>
+					</view>
+				</view>
+				
+				<input class="input" cursor-spacing="100" confirm-type="send" value="{{input}}" focus="{{keyboard}}" bindconfirm="send" hidden="{{text}}"></input>
+				<button class="recButton" hover-class="record" bindtouchstart="startRecord"	bindtouchend="stopRecord" hidden="{{!text}}">按住 说话</button>
+				<!-- <image class="emoticon" mode="widthFix" data-box="icon_box" bindtap="hiddenBox" src="{{img}}emoticon.png"></image> -->
+				<image class="emoticon" mode="widthFix" bindtap="recButton" src="{{img}}{{inputType}}.png"></image>
+				<image class="emoticon" mode="widthFix" data-box="tool" bindtap="hiddenBox" src="{{img}}more.png"></image>
+				<!-- 表情集 -->
+				<view class="btn_icon" hidden="{{box.icon_box}}" >
+					<view class="icon_box" >
+						<image class="emoticon_icon" mode="widthFix" src="{{img}}face.gif"></image>
+
+					</view>
+					<view class="icon_list" >
+						<view class="list">表情一</view>
+						<view class="list">表情二</view>
+					</view>
+				</view>
+				<!-- 表情集 -->
+
+				<!-- 工具 -->
+				<view class="btn_icon" hidden="{{box.tool}}" >
+					<view class="tool" >
+						<image class="btn_add" mode="widthFix" src="{{img}}picture.png" bindtap="chooseImage"></image>
+						<image class="btn_add" mode="widthFix" src="{{img}}video.png" bindtap="chooseVideo"></image>
+						<image class="btn_add" mode="widthFix" src="{{img}}voice.png" bindtap="{{Record?'startRecord':'stopRecord'}}"></image>
+					</view>
+				</view>
+				<!-- 工具 -->
+			</view>
+		</view>
+	</view>
+</view>
+<view class="page" hidden="{{invite}}"  bindtap="accept">接受邀请</view>

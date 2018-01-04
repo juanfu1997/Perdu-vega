@@ -1,0 +1,8 @@
+<view class="page">
+    <image class="logo" mode="widthFi" src="{{img}}logo.jpg"></image>
+    <view class="slogan">小织女在手 迷路不再有</view>
+    <view class="model">
+      <view class="" bindtap="double">双人会合</view>
+      <view class="" bindtap="single">单人前往</view>
+    </view>
+</view>
