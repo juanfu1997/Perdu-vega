@@ -56,7 +56,7 @@ function each(object, callback) {
 
     if (isObj) {
         for (name in object) {
-            if (callback.call(object[name], name, object[name]) === false) {
+            if (callback.call(Objectject[name], name, object[name]) === false) {
                 break
             }
         }
@@ -230,6 +230,29 @@ function adminUpload(tempUrl, typeOfUpload, callbackWhenSuccess, callbackWhenFai
         }
     })
 }
+function ranging(_origin , _destination,callback){
+    var that =this
+    var _url = 'http://restapi.amap.com/v3/distance'
+    wx.request({
+      url: _url, //仅为示例，并非真实的接口地址
+      data: {
+         key: '98cb022fc25b173289cd046a7d5ac488' ,
+         origins: _origin,
+         destination:_destination,
+         type:0,
+      },
+      header: {
+          'content-type': 'application/json' // 默认值
+      },
+      success: function(res) {
+        callback(res)
+        console.log('text',res.data)
+      },
+      fail(res){
+        console.log(res)
+      }
+    })
+}
 
 module.exports = {
     server: 'https://korjo.fans-me.com/',
@@ -261,5 +284,6 @@ module.exports = {
     param,
     goPage,
     saveFiles,
-    adminUpload
+    adminUpload,
+    ranging
 }

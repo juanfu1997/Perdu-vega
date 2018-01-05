@@ -1,9 +1,17 @@
 <view class="page" hidden="{{map}}">
-	<map class="wap" latitude="{{latitude}}" longitude="{{longitude}}" scale="18"  markers="{{markers}}" show-location polyline="{{polyline}}">
-		<cover-view class="info">相距1444米</cover-view>
-		<cover-image class="sos" mode="widthFix" src="{{img}}sos.png"></cover-image>
-		<cover-image class="location" mode="widthFix" src="{{img}}location.png"></cover-image>
-		<cover-image class="compass" mode="widthFix" src="{{img}}compass.png"></cover-image>
+	<map id="myMap" class="wap" latitude="{{latitude}}" longitude="{{longitude}}" scale="18"  markers="{{markers}}" show-location polyline="{{polyline}}">
+		<cover-view class="info">相距{{info}}米</cover-view>
+		<cover-view class="sos_view" >
+			<cover-image class="sos" mode="" src="{{img}}sos.png" catchtap="sos" catchtap="takeCall"/>
+		</cover-view>
+
+		<!-- <cover-view class="c"> -->
+			<cover-view class="map_left" bindtap="moveToMap">
+			<cover-image class="location" mode="" src="{{img}}location.png" />
+		<cover-image class="compass" style="transform: rotate({{compass}}deg);" mode="" src="{{img}}compass.png" catchtap="compassm" />
+		</cover-view>
+		<!-- </cover-view> -->
+
 		<cover-view class="ruler">
 			<cover-view class="big" bindtap="big">+</cover-view>
 			<cover-view class="space"></cover-view>

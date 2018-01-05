@@ -9,7 +9,8 @@ page{
 }
 .map{
 	width: 100%;
-	height: 92.5%;
+	height: 52.5%;
+	position: relative;
 }
 .tab{
 	width: 100%;
@@ -38,4 +39,37 @@ page{
 	white-space: nowrap;
 	overflow: hidden;
 	text-align:center;
+}
+.sos{
+	position: absolute;
+	left: 80rpx;
+	top: 40rpx;
+	width: 80rpx;
+	transform: translateX(-50%);
+}
+.compass{
+	position: absolute;
+	left:80rpx;
+	bottom: 25%;
+	width: 70rpx;
+	transform: translateX(-50%);
+}
+.location{
+	position: absolute;
+	left:80rpx;
+	bottom: 5%;
+	width: 80rpx;
+	transform: translateX(-50%);
+}
+.info{
+	position: absolute;
+	left: 50%;
+	top: 20rpx;
+	transform: translateX(-50%);
+	width: 50%;
+	height: 80rpx;
+	background-color: rgba(0,0,0,0.2);
+	text-align: center;
+	line-height: 80rpx;
+	border-radius: 20rpx;
 }

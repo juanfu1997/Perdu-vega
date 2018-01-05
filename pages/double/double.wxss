@@ -15,12 +15,16 @@ page{
 	border-bottom: 4rpx solid #7cbd27;
 	box-sizing: border-box;
 }
-.sos{
+.sos_view{
 	position: absolute;
 	left: 80rpx;
 	top: 40rpx;
-	width: 80rpx;
 	transform: translateX(-50%);
+}
+.sos{
+	
+	width: 80rpx;
+	height: 60rpx;
 }
 .info{
 	position: absolute;
@@ -35,18 +39,39 @@ page{
 	border-radius: 20rpx;
 }
 .compass{
+	/*position: absolute;
+	left:80rpx;
+	bottom: 25%;
+	transform: translateX(-50%);*/
+	width: 70rpx;
+	height: 70rpx;
+}
+.map_left{
+	position: absolute;
+	left:40rpx;
+	bottom: 5%;
+	/*transform: translateX(-50%);*/
+	height: 30%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+.b{
 	position: absolute;
 	left:80rpx;
 	bottom: 25%;
-	width: 70rpx;
 	transform: translateX(-50%);
 }
+/*.c{
+	display: flex;
+	flex-direction: column;
+
+}*/
 .location{
-	position: absolute;
-	left:80rpx;
-	bottom: 5%;
+	
 	width: 80rpx;
-	transform: translateX(-50%);
+	height: 80rpx;
 }
 .ruler{
 	position: absolute;
@@ -55,18 +80,23 @@ page{
 	width: 80rpx;
 	height:200rpx;
 	background:rgba(255,255,255,0.8);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+
 }
 .big{
-	display: block;
-	margin: 0 auto;
+	/*display: block;
+	margin: 0 auto;*/
 	text-align: center;
 	width: 100%;
 	height: 99rpx;
 	line-height: 99rpx;
 }
 .space{
-	display: block;
-	margin: 0 auto;
+	/*display: block;
+	margin: 0 auto;*/
 	text-align: center;
 	width: 80%;
 	height: 2rpx;
@@ -74,8 +104,8 @@ page{
 	border-radius: 10rpx;
 }
 .small{
-	display: block;
-	margin: 0 auto;
+	/*display: block;
+	margin: 0 auto;*/
 	text-align: center;
 	width: 100%;
 	height: 99rpx;

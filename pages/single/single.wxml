@@ -1,5 +1,10 @@
 <view class="page">
-	<map class="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="18"  circles ></map>
+	<map id="myMap" class="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="18" markers="{{markers}}" polyline="{{polyline}}" show-location >
+		<cover-view class="info">相距{{info}}米</cover-view>
+		<cover-image class="sos" src="/images/sos.png" mode="widthFix" catchtap="takeCall"></cover-image>
+		<cover-image class="compass" src="/images/compass.png" mode="widthFix"></cover-image>
+		<cover-image class="location" src="/images/location.png" mode="widthFix" catchtap="moveToMap"></cover-image>
+	</map>
 	<view class="tab">
 		<image class="end" mode="widthFix" src="{{img}}close.png"></image>
 		<view class="address" bindtap="address">{{address}}</view>

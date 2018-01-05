@@ -80,11 +80,40 @@ Page({
         distance: '',
         cost: '',
         polyline: [],
+        compass:'',
+        info:'',
                               
 
   },
+  takeCall(){
+    wx.makePhoneCall({
+      phoneNumber: '11110' //仅为示例，并非真实的电话号码
+    })
+  },
+  compass(){
+    var that = this
+    var compass = that.data.compass
+    wx.onCompassChange(function (res) {
+      compass = res.direction
+      that.setData({compass})
+      })
+  },
+  moveToMap(){
+    var that = this
+    var latitude = that.data.latitude
+    var longitude = that.data.longitude
+    that.mapCtx.moveToLocation()
+  },
   walkRoute(location1,location2,callback){
     const that = this;
+        var lat1 = location1.longitude + "," + location1.latitude
+          var lat2 = location2.longitude + "," + location2.latitude
+    console.log('lat12',lat1,lat2)
+          $.ranging(lat1,lat2,function(e){
+            var distance = e.data.results[0].distance
+            console.log('info',distance)
+            that.setData({info:distance})
+          })
        // const location = wx.getStorageSync('userLocation');
        // const chosen = wx.getStorageSync('chosenObj');
        //调取高德地图api的步行路线规划
@@ -94,7 +123,7 @@ Page({
           origin: location1.longitude+","+ location1.latitude,
           destination: location2.longitude+","+ location2.latitude,
           success: function(data){
-            console.log('gaode',location1,location2)
+            console.log('gaode1',location1,location2)
                const points = [];
                if(data.paths && data.paths[0] && data.paths[0].steps){
                   var steps = data.paths[0].steps;
@@ -642,6 +671,7 @@ Page({
       var _json = {roomId:'0',latlngjson:latlngjson_msg,id:_id,sort:_sort}
     }
     _json = JSON.stringify(_json)
+    console.log('json',_json)
      // console.log(latlngjson_msg)
 
     wx.request({
@@ -889,11 +919,14 @@ a(options){
                                 if(!polyline.length){
                                       var location1 = e.data.latlngjson[1].location2[0]
                                       var location2 = e.data.latlngjson[0].location1[0]
-                                      console.log('location2',e)
+                                      console.log('location2',location1,location2)
                                       that.walkRoute(location1,location2,function(res){
-                                        markers[1] = res.paths[0].steps[0].polyline[0].points
-                                        console.log('walkRoute',res)
-                                        that.setData({markers})
+                                        // var polyline = that.data.polyline
+                                        // console.log(res,polyline)
+                                        // // markers[0].longitude = polyline[0].points.longitude
+                                        // // markers[0].latitude = polyline[0].points.latitude
+                                        // console.log('walkRoute',res)
+                                        // that.setData({markers})
                                       })
                                     }
                                 // var _ulr = e.data.latlngjson[1].location2.headImgUrl
@@ -901,15 +934,15 @@ a(options){
                                     console.log('牛郎',)
                                     // markers[1].latitude = e.data.latlngjson[0].location1[0].latitude
                                     // markers[1].longitude = e.data.latlngjson[0].location1[0].longitude
-                                    latlngjson2.latitude = e.data.latlngjson[0].location1[0].latitude
-                                    latlngjson2.longitude = e.data.latlngjson[0].location1[0].longitude
+                                    markers[1].latitude = e.data.latlngjson[0].location1[0].latitude
+                                    markers[1].longitude = e.data.latlngjson[0].location1[0].longitude
                                     console.log( typeof e.data.latlngjson[1].location2)
                                     console.log(  e.data.latlngjson[1].location2)
                                     // res.data.latlngjson[1].location2 = JSON.parse(res.data.latlngjson[1].location2)
                                     var rad = Math.random()
                                     markers[0].latitude = latitude
                                     markers[0].longitude  = longitude
-                                    var _location1 = latlngjson2
+                                    var _location1 = [{latitude:markers[1].latitude,longitude:markers[1].longitude}]
                                     var _location2 = [{latitude:markers[0].latitude,longitude:markers[0].longitude}]//[{latitude:latitude,longitude:longitude}]
                                     console.log(markers[1].latitude,markers[1].latitude )
                                     
@@ -931,18 +964,18 @@ a(options){
                                 
 
                             }
-                      if(talkId1 == getApp().globalData.talkId && talkId2 != 0){
+                      if(talkId1 == getApp().globalData.talkId && talkId2 != 0){  
                                 // console.log('织女',res)
                                 if(!polyline.length){
                                       var location1 = e.data.latlngjson[0].location1[0]
                                       var location2 = e.data.latlngjson[1].location2[0]
                                       that.walkRoute(location1,location2,function(res){
-                                        var polyline = that.data.polyline
-                                        console.log(res,polyline)
-                                        // markers[0].longitude = polyline[0].points.longitude
-                                        // markers[0].latitude = polyline[0].points.latitude
-                                        console.log('walkRoute',res)
-                                        that.setData({markers})
+                                        // var polyline = that.data.polyline
+                                        // console.log(res,polyline)
+                                        // // markers[0].longitude = polyline[0].points.longitude
+                                        // // markers[0].latitude = polyline[0].points.latitude
+                                        // console.log('walkRoute',res)
+                                        // that.setData({markers})
                                       })
                                     }
                                 var tips = that.data.tips
@@ -1127,6 +1160,8 @@ console.log('roomId',roomId)
       wx.showLoading({
         title: '正在定位中···',
       })
+      that.mapCtx = wx.createMapContext('myMap')
+      that.compass()
       getApp().getUserInfo(function(){
         wx.getLocation({
             type:'gcj02',
@@ -1200,7 +1235,7 @@ console.log('roomId',roomId)
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+  wx.stopCompass()
   },
 
   /**
