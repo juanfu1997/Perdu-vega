@@ -18,7 +18,7 @@ page{
 .sos_view{
 	position: absolute;
 	left: 80rpx;
-	top: 40rpx;
+	top: 30rpx;
 	transform: translateX(-50%);
 }
 .sos{
@@ -46,16 +46,20 @@ page{
 	width: 70rpx;
 	height: 70rpx;
 }
-.map_left{
+/*.map_left{
 	position: absolute;
 	left:40rpx;
 	bottom: 5%;
-	/*transform: translateX(-50%);*/
 	height: 30%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
+}*/
+.map_left{
+	position: absolute;
+	left:40rpx;
+	bottom: 5%;
 }
 .b{
 	position: absolute;
@@ -75,15 +79,15 @@ page{
 }
 .ruler{
 	position: absolute;
-	right: 80rpx;
+	right: 20rpx;
 	bottom: 5%;
 	width: 80rpx;
 	height:200rpx;
 	background:rgba(255,255,255,0.8);
-	display: flex;
+	/*display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: space-around;*/
 
 }
 .big{
@@ -95,8 +99,8 @@ page{
 	line-height: 99rpx;
 }
 .space{
-	/*display: block;
-	margin: 0 auto;*/
+	display: block;
+	margin: 0 auto;
 	text-align: center;
 	width: 80%;
 	height: 2rpx;
@@ -264,8 +268,9 @@ page{
 	width: 300rpx;
 }
 .msg_video{
-	width: 300rpx;
-	height: 150rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .end{
 	width: 8%;
@@ -279,7 +284,7 @@ page{
 	width: 100%;
 }*/
 .close{
-	width: 91%;
+	width: 88%;
 }
 .close_box{
 	position: absolute;
@@ -375,3 +380,47 @@ page{
 .btn_add{
 	width: 18%;
 }
+.compass2{
+	width: 8%;
+}
+.demo{
+	background-color: rgba(0,0,0,0.8);
+	/*opacity: 0.8;*/
+	position: absolute;
+	left: 0;
+	top:0;
+	z-index: 10;
+}
+.demo image{
+	width: 100%;
+	/*height: 100%;*/
+}
+.near{
+	position: absolute;
+	left: 50%;
+	top: 10%;
+	transform: translateX(-50%) ;
+	width: 80%;
+	/*height:80%;*/
+}
+.btn_choiced{
+	position: absolute;
+	left: 50%;
+	bottom: 20%;
+	transform: translateX(-50%);	
+	width: 30%;
+	height: 60rpx;
+	text-align: center;
+}
+.btn_near{
+	background-color: #75ab30;
+}
+.btn_near:nth-child(2){
+	margin: 25rpx auto;
+}
+.btn_yes{
+	bottom: 20%;
+}
+/*.btn_no{
+	bottom: 15%;
+}*/

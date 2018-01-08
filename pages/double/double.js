@@ -18,7 +18,7 @@ Page({
          longitude2:'',
          state:false,
          user:true,
-         map:false,
+         map:true,
          num:'2',
          invite:true,
          UserInfo:[{id:'vega',img:'',location:[{latitude:'12334'},{longitude:'2'}]},
@@ -62,6 +62,7 @@ Page({
                   {id:'1',type:"text",msg:'hei2'},
                   {id:'1',type:"text",msg:'hei2'},
                   ],
+        circles:{latitude:0,longitude:0,color:'#000000AA',fillColor:'#000000AA',radius:0,strokeWidth:0},
         invitation:false,
         roomId:'',
         roomSort:'0',
@@ -77,12 +78,13 @@ Page({
         text:false,
         keyboard:false,
         box:{close_box:true,icon_box:true,tool:true},
-        distance: '',
+        distance: '0',
         cost: '',
         polyline: [],
         compass:'',
         info:'',
-                              
+        showMarkers:false,
+        video:true,                              
 
   },
   takeCall(){
@@ -110,9 +112,12 @@ Page({
           var lat2 = location2.longitude + "," + location2.latitude
     console.log('lat12',lat1,lat2)
           $.ranging(lat1,lat2,function(e){
+            console.log(e)
             var distance = e.data.results[0].distance
-            console.log('info',distance)
-            that.setData({info:distance})
+            // if(that.data.distance < 20){console.log('distance',that.data.distance)} //测试用
+            if(distance <30 && distance != 0){}
+            // console.log('distance',distance)
+            that.setData({distance:distance})
           })
        // const location = wx.getStorageSync('userLocation');
        // const chosen = wx.getStorageSync('chosenObj');
@@ -136,6 +141,7 @@ Page({
                       });
                   } 
                }
+            console.log('lol',points)
                that.setData({
                   polyline: [{
                     points: points,
@@ -187,6 +193,23 @@ Page({
       keyboard,
       box
     })
+  },
+  bindfullscreenchange(e){
+    var that = this
+    var video = that.data.video
+    var direction = e.detail.direction
+    if(direction =='vertical'){
+      that.setData({video:true})
+    }
+    console.log('eeee',event.detail)
+  },
+  playVideo(){
+    var that = this
+    var video = that.data.video
+    that.setData({video:false})
+    that.videoContext.play()
+    that.videoContext.requestFullScreen()
+    console.log('video')
   },
   playVoice(e){
     var that = this
@@ -917,9 +940,9 @@ a(options){
                         if( (latlngjson[1].idCard == getApp().globalData.talkId) || (talkId1 != getApp().globalData.talkId && latlngjson[1].idCard == 0) ){
                                 var talkId2 = getApp().globalData.talkId
                                 if(!polyline.length){
-                                      var location1 = e.data.latlngjson[1].location2[0]
+                                      var location1 = {longitude,latitude}
+                                      console.log('lol',longitude,latitude)
                                       var location2 = e.data.latlngjson[0].location1[0]
-                                      console.log('location2',location1,location2)
                                       that.walkRoute(location1,location2,function(res){
                                         // var polyline = that.data.polyline
                                         // console.log(res,polyline)
@@ -929,23 +952,23 @@ a(options){
                                         // that.setData({markers})
                                       })
                                     }
-                                // var _ulr = e.data.latlngjson[1].location2.headImgUrl
-                                // that.getRoomInfo(roomId,function(res){
                                     console.log('牛郎',)
-                                    // markers[1].latitude = e.data.latlngjson[0].location1[0].latitude
-                                    // markers[1].longitude = e.data.latlngjson[0].location1[0].longitude
+
                                     markers[1].latitude = e.data.latlngjson[0].location1[0].latitude
                                     markers[1].longitude = e.data.latlngjson[0].location1[0].longitude
                                     console.log( typeof e.data.latlngjson[1].location2)
                                     console.log(  e.data.latlngjson[1].location2)
-                                    // res.data.latlngjson[1].location2 = JSON.parse(res.data.latlngjson[1].location2)
                                     var rad = Math.random()
                                     markers[0].latitude = latitude
                                     markers[0].longitude  = longitude
+                                    markers[0].id  = 0
+                                      console.log('location2',latitude,longitude, markers)
+
                                     var _location1 = [{latitude:markers[1].latitude,longitude:markers[1].longitude}]
                                     var _location2 = [{latitude:markers[0].latitude,longitude:markers[0].longitude}]//[{latitude:latitude,longitude:longitude}]
                                     console.log(markers[1].latitude,markers[1].latitude )
-                                    
+                                    UserInfo[0].img = e.data.latlngjson[1].headImgUrl
+                                    UserInfo[1].img = e.data.latlngjson[0].headImgUrl
                                     // if(markers[1].iconPath.length == 0){
                                     //     getApp().saveFiles(url_1,function(res){
                                     //     let markers = that.data.markers;
@@ -953,19 +976,17 @@ a(options){
                                     //     that.setData({ markers })
                                     //     })
                                     // }
-                                    that.setData({tips:false,invitation:true,roomState:true})
+                                    that.setData({tips:false,invitation:true,roomState:true,markers,showMarkers:true,UserInfo})
                                     // if(!polyline.length){
                                     //   var location1 = e.data.latlngjson[0].location1[0]
                                     //   var location2 = e.data.latlngjson[1].location2[0]
                                     //   that.walkRoute(location1,location2)
                                     // }
                                     that.creatRoom(_location1,_location2,1,roomId,talkId1,talkId2,url_1,getApp().globalData.userInfo.avatarUrl)
-                                // })
                                 
 
                             }
                       if(talkId1 == getApp().globalData.talkId && talkId2 != 0){  
-                                // console.log('织女',res)
                                 if(!polyline.length){
                                       var location1 = e.data.latlngjson[0].location1[0]
                                       var location2 = e.data.latlngjson[1].location2[0]
@@ -987,37 +1008,26 @@ a(options){
                                     })
                                     tips =false
                                   }
-                                  // markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
-                                  // markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
-                                  // that.getRoomInfo(roomId,function(res){
+
                                     console.log('织女',e.data.latlngjson[0].idCard,that.data.talkId1,getApp().globalData.talkId)
                         
-                                    // markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
-                                    // markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
                                     markers[1].latitude = e.data.latlngjson[1].location2[0].latitude
                                     markers[1].longitude = e.data.latlngjson[1].location2[0].longitude
 
-                                    // console.log( res.data.latlngjson[0].location1[0])
-                                    // res.data.latlngjson[0].location1 = JSON.parse(res.data.latlngjson[0].location1)
-                                    // console.log( 'typeof',  res.data.latlngjson[0].location1)
-                                    // console.log(typeof res.data.latlngjson[0].location1)
                                     e.data.latlngjson[0].location1[0].latitude = markers[0].latitude = latitude
                                     e.data.latlngjson[0].location1[0].longitude = markers[0].longitude = longitude
+                                    markers[0].id = 0
                                     // console.log('1001',res.data.latlngjson[0].location1.latitude)
                                     
 
-                                    // var _location1 = JSON.stringify({latitude:latitude,longitude:longitude})
-                                    // var _location2 = JSON.stringify({latitude:markers[1].latitude,longitude:markers[1].longitude})
                                     var _location1 = [{latitude:latitude,longitude:longitude}]
                                     var _location2 = [{latitude:markers[1].latitude,longitude:markers[1].longitude}]
                                     // console.log(_location1,_location2,1,roomId)
 
-                                    // that.creatRoom(_location1,_location2,'1',roomId,that.data.talkId1,that.data.talkId2)
-                                    // console.log('111',_location1,_location2,1,roomId,that.data.talkId1,that.data.talkId2)
+                                   
 
                                     UserInfo[0].img = e.data.latlngjson[0].headImgUrl
                                     UserInfo[1].img = e.data.latlngjson[1].headImgUrl
-                                    that.setData({UserInfo})
                                     console.log('男的经纬度',e.data.latlngjson )
                                     // if(markers[1].iconPath.length == 0){
                                     //     getApp().saveFiles(url_2,function(res){
@@ -1037,7 +1047,7 @@ a(options){
                                     //   var location2 = e.data.latlngjson[1].location2[0]
                                     //   that.walkRoute(location1,location2)
                                     // }
-                                    that.setData({tips:false,invitation:true,roomState:true})
+                                    that.setData({tips:false,invitation:true,roomState:true,markers,showMarkers:true,UserInfo})
                                       that.creatRoom(_location1,_location2,1,roomId,talkId1,talkId2,getApp().globalData.userInfo.avatarUrl,url_2)
                                   // })
                                 
@@ -1161,6 +1171,7 @@ console.log('roomId',roomId)
         title: '正在定位中···',
       })
       that.mapCtx = wx.createMapContext('myMap')
+      that.videoContext = wx.createVideoContext('myVideo')
       that.compass()
       getApp().getUserInfo(function(){
         wx.getLocation({
@@ -1169,16 +1180,24 @@ console.log('roomId',roomId)
               wx.hideLoading()
               latitude = res.latitude
               longitude = res.longitude
-              markers[0].latitude = latitude
-              markers[0].longitude = longitude
+              // markers[0].latitude = latitude
+              // markers[0].longitude = longitude
               // markers[0].iconPath = getApp().globalData.avatarUrl
               // that.walkRoute(res)
               
               that.setData({
-                latitude,longitude,markers
+                latitude,longitude
               })
-              if(op.roomId){
+              var Storage = wx.getStorageSync('roomId')
+              if(op.roomId || Storage){
                     share = true
+                    if(op.roomId){
+                      wx.setStorageSync('roomId', op.roomId)
+                      console.log('roomIdok',Storage)
+                    }else{
+                      op.roomId = Storage
+                    }
+
                     that.setData({
                     share:true,
                     roomId:op.roomId,
