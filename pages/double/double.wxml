@@ -19,6 +19,7 @@
 			<cover-view class="small" bindtap="small">-</cover-view>
 		</cover-view>		
 	</map>
+	<!-- 显示demo时地图图片 -->
 	<view  class="wap" hidden="{{!map}}">
 		<view class="info">相距{{distance}}米</view>
 		<image style="width: 100%;height:100%; " src="{{img}}map.jpg" />
@@ -110,15 +111,15 @@
 		</view>
 	</view>
 </view>
-<view class="page demo">
-	<view class="near" hidden="1">
+<view class="page demo" bindtap="demo" wx:if="{{demo}}">
+	<view class="near" wx:if="{{near}}">
 		<image src="{{img}}near.png" mode="widthFix"></image>
 		<view class="btn_choiced">
 			<view class="btn_near" bindtap="btn_yes">是</view>
 			<view class="btn_near" bindtap="btn_no">否</view>
 		</view>
 	</view>
-	<view class="near" hidden="">
+	<view class="near" wx:if="{{meeted}}">
 		<image src="{{img}}meeted.png" mode="widthFix"></image>
 		<!-- <view class="btn_choiced">
 			<view class="btn_near" bindtap="btn_yes">是</view>

@@ -84,8 +84,17 @@ Page({
         compass:'',
         info:'',
         showMarkers:false,
-        video:true,                              
+        video:true,
+        demo: true,
+        meeted:false,                             
 
+  },
+  demo(){
+    var that = this
+    var demo = that.data.demo
+    demo=!demo
+    
+    that.setData({demo})
   },
   takeCall(){
     wx.makePhoneCall({
@@ -115,9 +124,12 @@ Page({
             console.log(e)
             var distance = e.data.results[0].distance
             // if(that.data.distance < 20){console.log('distance',that.data.distance)} //测试用
-            if(distance <30 && distance != 0){}
+            var near = that.data.near
+            if(distance <30 && distance != 0){
+               near = true
+            }
             // console.log('distance',distance)
-            that.setData({distance:distance})
+            that.setData({distance:distance,near})
           })
        // const location = wx.getStorageSync('userLocation');
        // const chosen = wx.getStorageSync('chosenObj');
