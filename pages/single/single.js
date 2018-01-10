@@ -44,10 +44,37 @@ Page({
                             }
                   }
                   ],
+     circles:{latitude:0,longitude:0,color:'#000000AA',fillColor:'#000000AA',radius:0,strokeWidth:0},
     polyline:[],
     compass:'0',
     info:'',
+    scale:18,
   
+  },
+  changeScale(e){
+    console.log('changeScale',e)
+    var that = this
+    var scale = that.data.scale
+    var type = e.currentTarget.dataset.type
+    if(type == "big" && scale < 18){
+      scale++
+    }else if(type == "small"){
+      scale--
+    }
+    that.setData({scale})
+  },
+  hiddenBox(){
+    wx.showModal({
+      title: '',
+      content: '是否推出地图',
+      success: function(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
   },
 
   takeCall(){

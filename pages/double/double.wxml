@@ -1,6 +1,6 @@
-<view class="page">
+<view class="page" style="filter: blur({{demo?'20px':''}});">
 	<!-- <view class="page" style="background-color: #000;opacity: 0.8;position: absolute;left: 0;top: 0; z-index: 5;"></view> -->
-	<map id="myMap" class="wap" latitude="{{latitude}}" longitude="{{longitude}}" scale="18"  markers="{{markers}}" show-location polyline="{{polyline}}" circles="{{circles}}"  hidden="{{map}}">
+	<map id="myMap" class="wap" latitude="{{latitude}}" longitude="{{longitude}}" scale="{{scale}}"  markers="{{markers}}" show-location polyline="{{polyline}}" circles="{{circles}}"  hidden="{{demo}}">
 		<cover-view class="info">相距{{distance}}米</cover-view>
 		<cover-view class="sos_view" >
 			<cover-image class="sos" mode="" src="{{img}}sos.png" catchtap="sos" catchtap="takeCall"/>
@@ -14,13 +14,13 @@
 		<!-- </cover-view> -->
 
 		<cover-view class="ruler">
-			<cover-view class="big" bindtap="big">+</cover-view>
+			<cover-view class="big" data-type="big" bindtap="changeScale">+</cover-view>
 			<cover-view class="space"></cover-view>
-			<cover-view class="small" bindtap="small">-</cover-view>
+			<cover-view class="small" data-type="small" bindtap="changeScale">-</cover-view>
 		</cover-view>		
 	</map>
 	<!-- 显示demo时地图图片 -->
-	<view  class="wap" hidden="{{!map}}">
+	<view  class="wap" hidden="{{!demo}}">
 		<view class="info">相距{{distance}}米</view>
 		<image style="width: 100%;height:100%; " src="{{img}}map.jpg" />
 	</view>
@@ -47,7 +47,7 @@
 			</view>
 		</view> -->
 		<!-- 聊天部件 -->
-		<view class="talking" hidden="">
+		<view class="talking" hidden="{{!invitation}}">
 			<scroll-view scroll-y   class="chatRoom"  bindtap="talk" scroll-into-view="id-{{moveTo}}">
 				<view wx:for="{{msgList}}"  class="msg {{item.cls == 'left' ? 'just_left' : 'just_right'}}">
 					<view class="user_img  {{item.cls == 'left' ? 'order_left' : 'order_right'}}" >
@@ -74,9 +74,9 @@
 					<image class="close" mode="widthFix" src="{{img}}close.png" data-box="close_box" bindtap="hiddenBox"></image>
 					<!-- 关闭聊天 -->
 					<view class="close_box" hidden="{{box.close_box}}">
-						<view class="meeted">已经相遇</view>
+						<view class="meeted" bindtap="near">已经相遇</view>
 						<image class="space" mode="widthFix" src="{{img}}space.png" lazy-load hover-start-time="2000"></image>
-						<view class="meeted">结束聊天</view>
+						<view class="meeted" catchtap="meeted">结束聊天</view>
 					</view>
 				</view>
 				<image class="compass2" style="transform: rotate({{compass}}deg);" mode="widthFix" src="{{img}}compass.png" catchtap="compassm" />
@@ -111,20 +111,21 @@
 		</view>
 	</view>
 </view>
-<view class="page demo" bindtap="demo" wx:if="{{demo}}">
-	<view class="near" wx:if="{{near}}">
-		<image src="{{img}}near.png" mode="widthFix"></image>
-		<view class="btn_choiced">
-			<view class="btn_near" bindtap="btn_yes">是</view>
-			<view class="btn_near" bindtap="btn_no">否</view>
-		</view>
-	</view>
-	<view class="near" wx:if="{{meeted}}">
-		<image src="{{img}}meeted.png" mode="widthFix"></image>
-		<!-- <view class="btn_choiced">
-			<view class="btn_near" bindtap="btn_yes">是</view>
-			<view class="btn_near" bindtap="btn_no">否</view>
-		</view> -->
+<view class="page demo" catchtap="demo" wx:if="{{demo}}"></view>
+<view class="near" wx:if="{{near}}">
+	<image src="{{img}}near.png" mode="widthFix"></image>
+	<view class="btn_choiced">
+		<view class="btn_near" catchtap="btn_yes">是</view>
+		<view class="btn_near" catchtap="demo">否</view>
 	</view>
 </view>
+<view class="near" wx:if="{{meeted}}">
+	<image src="{{img}}meeted.png" mode="widthFix"></image>
+	<view class="btn_pass" catchtap="endTalk">结束聊天</view>
+	<!-- <view class="btn_choiced">
+		<view class="btn_near" bindtap="btn_yes">是</view>
+		<view class="btn_near" bindtap="btn_no">否</view>
+	</view> -->
+</view>
+
 <!-- <view class="page" hidden="{{invite}}"  bindtap="accept">接受邀请</view> -->

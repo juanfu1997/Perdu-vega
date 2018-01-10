@@ -1,13 +1,35 @@
-<view class="page">
-	<map id="myMap" class="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="18" markers="{{markers}}" polyline="{{polyline}}" show-location >
+<view class="page" style="filter: blur(0px)">
+	<map id="myMap" class="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="{{scale}}" markers="{{markers}}" polyline="{{polyline}}" show-location  circles="{{circles}}" hidden="">
 		<cover-view class="info">相距{{info}}米</cover-view>
-		<cover-image class="sos" src="/images/sos.png" mode="widthFix" catchtap="takeCall"></cover-image>
-		<cover-image class="compass" src="/images/compass.png" mode="widthFix"></cover-image>
-		<cover-image class="location" src="/images/location.png" mode="widthFix" catchtap="moveToMap"></cover-image>
+		<cover-image class="sos" src="{{img}}sos.png" mode="widthFix" catchtap="takeCall"></cover-image>
+		<!-- <cover-image class="compass" src="/images/compass.png" mode="widthFix"></cover-image> -->
+		<cover-image class="location" src="{{img}}location.png" mode="widthFix" catchtap="moveToMap"></cover-image>
+		<cover-view class="ruler">
+			<cover-view class="big" data-type="big" bindtap="changeScale">+</cover-view>
+			<cover-view class="space"></cover-view>
+			<cover-view class="small" data-type="small" bindtap="changeScale">-</cover-view>
+		</cover-view>
 	</map>
-	<view class="tab">
-		<image class="end" mode="widthFix" src="{{img}}close.png"></image>
-		<view class="address" bindtap="address">{{address}}</view>
-		<image class="search" mode="widthFix" src="{{img}}close.png"></image>
+	<view class="map" hidden="1">
+		<image class="map2" mode="" src="/images/map2.jpg"></image>
 	</view>
+	<view class="tab">
+		<view class="end">
+			<image class="close" mode="widthFix" src="{{img}}close.png" data-box="close_box" bindtap="hiddenBox"></image>
+			<!-- 关闭聊天 -->
+			<view class="close_box" hidden="1"><!-- {{box.close_box}} -->
+				<view class="meeted">已经相遇</view>
+				<image class="space" mode="widthFix" src="{{img}}space.png" lazy-load hover-start-time="2000"></image>
+				<view class="meeted">结束聊天</view>
+			</view>
+		</view>
+
+		<view class="address" bindtap="address">{{address}}</view>
+		<image class="compass2" style="transform: rotate({{compass}}deg);" mode="widthFix" src="{{img}}compass.png" catchtap="compassm" />
+	</view>
+	
 </view>
+<!-- <view class="page" hidden="">
+	<view></view> 
+	<image class="btn_near" style="" src="{{img}}near.png"></image>
+</view> -->

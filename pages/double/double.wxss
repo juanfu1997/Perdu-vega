@@ -103,7 +103,7 @@ page{
 	margin: 0 auto;
 	text-align: center;
 	width: 80%;
-	height: 2rpx;
+	height: 4rpx;
 	background-color: #c2c9ca;
 	border-radius: 10rpx;
 }
@@ -384,24 +384,24 @@ page{
 	width: 8%;
 }
 .demo{
-	background-color: rgba(0,0,0,0.8);
+	/*background-color: rgba(0,0,0,0.8);*/
 	/*opacity: 0.8;*/
 	position: absolute;
 	left: 0;
 	top:0;
-	z-index: 10;
 }
-.demo image{
-	width: 100%;
-	/*height: 100%;*/
-}
+
 .near{
 	position: absolute;
-	left: 50%;
+	left: 10%;
 	top: 10%;
-	transform: translateX(-50%) ;
 	width: 80%;
+	/*transform: translateX(-50%) ;*/
 	/*height:80%;*/
+}
+.near image{
+	width: 100%;
+	/*height: 100%;*/
 }
 .btn_choiced{
 	position: absolute;
@@ -411,9 +411,12 @@ page{
 	width: 30%;
 	height: 60rpx;
 	text-align: center;
+	line-height: 60rpx;
+	border-radius: 20rpx;
 }
 .btn_near{
 	background-color: #75ab30;
+	border-radius: 20rpx;
 }
 .btn_near:nth-child(2){
 	margin: 25rpx auto;
@@ -424,3 +427,15 @@ page{
 /*.btn_no{
 	bottom: 15%;
 }*/
+.btn_pass{
+	position: absolute;
+	left: 50%;
+	bottom: 10%;
+	transform: translateX(-50%);
+	padding: 15rpx 20rpx;
+	height: 60rpx;
+	line-height: 60rpx;
+	border-radius: 20rpx;
+	text-align: center;
+	background-color: #75ab30;
+}

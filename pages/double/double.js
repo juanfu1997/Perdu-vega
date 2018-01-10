@@ -18,7 +18,7 @@ Page({
          longitude2:'',
          state:false,
          user:true,
-         map:true,
+         map:false,
          num:'2',
          invite:true,
          UserInfo:[{id:'vega',img:'',location:[{latitude:'12334'},{longitude:'2'}]},
@@ -64,6 +64,7 @@ Page({
                   ],
         circles:{latitude:0,longitude:0,color:'#000000AA',fillColor:'#000000AA',radius:0,strokeWidth:0},
         invitation:false,
+        scale:18,
         roomId:'',
         roomSort:'0',
         msgList:[],
@@ -85,16 +86,69 @@ Page({
         info:'',
         showMarkers:false,
         video:true,
-        demo: true,
-        meeted:false,                             
+        demo: false,
+        meeted:false,
+        near:false,                             
+
+  },
+  meeted(){
+    var that = this
+    var demo = that.data.demo
+    var meeted = that.data.meeted
+    var map = that.data.map
+    meeted = demo = map=true
+    that.setData({meeted,demo,map})
+  },
+  near(){
+    var that = this
+    var near = that.data.near
+    var demo = that.data.demo
+    near = demo =true
+    that.setData({near,demo})
+  },
+  endTalk(){
+    var that = this
+    that.demo()
+    var _url = 'https://www.korjo.cn/KorjoApi/DeleteMituRoom'
+    var _dataJson = 4
+    getApp().saveUserData(_url,3,_dataJson,function(e){
+      if(!e.data){
+        wx.showToast({
+          title: '已退出',
+          icon: 'success',
+          duration: 2000
+        })
+      }
+      console.log('guanbiliaotian',_url,_dataJson)
+    })
+  },
+  // btn_no(){
+  //   var that = this
+  //   var near = that.data.near
+  //   var demo = that.data.demo
+  //   var meeted = that.data.meeted
+  //   near = demo = meeted =false
+  //   that.setData({near,demo,meeted})
+  // },
+  btn_yes(){
+    var that = this
+    // var near =that.data.near
+    // var demo =that.data.demo
+    // var meeted = that.data.meeted
+    that.setData({
+      near:false,
+      meeted:true
+    })
 
   },
   demo(){
     var that = this
+    var near = that.data.near
     var demo = that.data.demo
-    demo=!demo
+    var meeted = that.data.meeted
+    near = meeted = demo=!demo
     
-    that.setData({demo})
+    that.setData({near,meeted,demo})
   },
   takeCall(){
     wx.makePhoneCall({
@@ -186,6 +240,18 @@ Page({
        //     //    address: chosen.address
        //     // }
        // });
+  },
+  changeScale(e){
+    console.log('changeScale',e)
+    var that = this
+    var scale = that.data.scale
+    var type = e.currentTarget.dataset.type
+    if(type == "big" && scale < 18){
+      scale++
+    }else if(type == "small"){
+      scale--
+    }
+    that.setData({scale})
   },
   recButton(){
     var that = this 

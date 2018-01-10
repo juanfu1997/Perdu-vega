@@ -112,7 +112,7 @@ App({
         callback(response)
        }
       })
-    }else{
+    }else if(_dataName == 2){
       _json =  JSON.stringify(_json)
       // console.log(_json)
       wx.request({
@@ -130,6 +130,25 @@ App({
         console.log(  response);
        }
       })
+    }else{
+      _json =  JSON.stringify(_json)
+      // console.log(_json)
+      wx.request({
+        url:_url,
+         data: {
+        id  : _json,
+        },
+        // dataType: "json",
+        header: {
+         'content-type': 'application/x-www-form-urlencoded'
+       },
+       method:'POST',
+       success:function(response){
+        callback(response)
+        console.log('guanbiliaotian',response);
+       }
+      })
+
     }
   },
     saveFiles(_url,callback){
