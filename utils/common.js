@@ -208,7 +208,7 @@ function saveFiles(_url,callback){
 function adminUpload(tempUrl, typeOfUpload, callbackWhenSuccess, callbackWhenFail) {
     console.log(typeOfUpload+": "+tempUrl);
     wx.uploadFile({
-        url: 'https://korjo.fans-me.com/KorjoApi/AdminUpload',
+        url: 'https://www.korjo.cn/KorjoApi/AdminUpload',
         filePath: tempUrl,
         name: 'myPostcardPics',
         method: 'POST',
@@ -255,7 +255,7 @@ function ranging(_origin , _destination,callback){
 }
 
 module.exports = {
-    server: 'https://korjo.fans-me.com/',
+    server: 'https://www.korjo.cn/',
     get: function (url, data, callback) {
         let server = this.server
         if (url.indexOf('https://') > -1) {

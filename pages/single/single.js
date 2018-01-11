@@ -47,7 +47,7 @@ Page({
      circles:{latitude:0,longitude:0,color:'#000000AA',fillColor:'#000000AA',radius:0,strokeWidth:0},
     polyline:[],
     compass:'0',
-    info:'',
+    info:'0',
     scale:18,
   
   },
@@ -95,7 +95,6 @@ Page({
     wx.onCompassChange(function (res) {
       compass = res.direction
       that.setData({compass})
-      console.log(res.direction)
     })
   },
   walkRoute(location1,location2,callback){
@@ -280,14 +279,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  wx.stopCompass()
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+  wx.stopCompass()
   },
 
   /**

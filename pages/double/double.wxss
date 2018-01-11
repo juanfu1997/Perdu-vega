@@ -167,17 +167,7 @@ page{
     transform: translateX(-50%) translateY(-50%);
 	text-align: center;
 }
-.picture button{
-    width: 200rpx;
-	height: 200rpx;
-	margin: 0 auto;
-	padding: 0;
-	background: transparent;
-	border:transparent;
-}
-.picture button::after{
-	border:transparent;
-}
+
 .picture image{
 	width: 200rpx;
 	display: block;
@@ -191,12 +181,20 @@ page{
 	border-radius: 20rpx;
 	
 }
+.iframe button{
+	width: 250rpx;
+	height: 80rpx;
+	text-align: center;
+	background-color: #79b52e;
+	line-height: 80rpx;
+}
 .emoticon{
 	width: 8%;
 	background-color: transparent;
 }
 .msg{
-	width: 100%;
+	width: 200rpx;
+	height: 200rpx;
 	display: flex;
 	flex-direction: row;
 	align-items: center;

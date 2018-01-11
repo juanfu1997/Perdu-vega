@@ -26,16 +26,16 @@
 	</view>
 	<view class="iframe">
 		<view class="invitation" hidden="{{invitation}}"><!-- {{invitation}} -->
-			<view class="picture" bindtap="inviteUser" hidden="{{state}}">
+			<view class="picture" hidden="{{state}}">
 				<!-- <button  bindtap="inviteUser"> -->
-				<image mode="widthFix" src="{{img}}invitation.png" data-state="{{state}}" ></image>
+				<image mode="widthFix" src="{{img}}invitation.png" data-state="{{state}}"  ></image>
 			<!-- </button> -->
-				<view class="state">点击头像邀请</view>
+				<view class="state" bindtap="inviteUser" wx:if="{{!showShare}}" >创建聊天室</view>
+				<button open-type="share" class="share" wx:if="{{showShare}}" bindtap="share">邀请好友</button>
+
 			</view>
 			<view class="picture" bindtap="cancel" hidden="{{!state}}">
-				<!-- <button  bindtap="inviteUser"> -->
 				<image mode="widthFix" src="{{img}}invitation.png" data-state="{{state}}" ></image>
-			<!-- </button> -->
 				<view class="state">邀请中···</view>
 			</view>
 
@@ -62,7 +62,8 @@
 							<image wx:if="{{item.type=='picture'}}" class="msg_img" mode="widthFix" src="{{item.msg}}" bindtap="previewImage" data-src="{{item.msg}}" ></image>
 							<view wx:if="{{item.type=='video'}}" class="msg_video" bindtap="playVideo" >点击播放视频<image  src="{{img}}video_msg2.png" wx:if="{{item.type=='video'}}" style="width: 50rpx; height: 50rpx;"  /></view>
 							<video wx:if="{{item.type=='video'}}" src="{{item.msg}}" id="myVideo" hidden="{{video}}" bindfullscreenchange="bindfullscreenchange"></video>
-							<audio style="width:300rpx; height:150rpx;" id="myAudio" wx:if="{{item.type=='audio'}}" src="{{item.msg}}" data-src="{{item.msg}}" bindtap="playVoice"></audio>
+							<view wx:if="{{item.type=='audio'}}" class="msg_video" data-src="{{item.msg}}" bindtap="playVoice">点击播放录音<image  src="{{img}}video_msg2.png" wx:if="{{item.type=='audio'}}" style="width: 50rpx; height: 50rpx;"  /></view>
+							<!-- <audio id="myAudio" wx:if="{{item.type=='audio'}}" src="{{item.msg}}" data-src="{{item.msg}}" bindtap="playVoice"></audio> -->
 						<!-- </view> -->
 						<!-- <view wx:if="{{item.type=='picture'}}" ><image class="msg_img" mode="widthFix" src="{{item.msg}}" bindtap="previewImage" data-src="{{item.msg}}"></image></view> -->
 						<!-- <view wx:if="{{item.type=='video'}}" ><video></video></view> -->
@@ -103,7 +104,7 @@
 					<view class="tool" >
 						<image class="btn_add" mode="widthFix" src="{{img}}picture.png" bindtap="chooseImage"></image>
 						<image class="btn_add" mode="widthFix" src="{{img}}video.png" bindtap="chooseVideo"></image>
-						<image class="btn_add" mode="widthFix" src="{{img}}voice.png" bindtap="{{Record?'startRecord':'stopRecord'}}"></image>
+						<!-- <image class="btn_add" mode="widthFix" src="{{img}}voice.png" bindtap="{{Record?'startRecord':'stopRecord'}}"></image> -->
 					</view>
 				</view>
 				<!-- 工具 -->

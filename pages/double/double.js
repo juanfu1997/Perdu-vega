@@ -17,6 +17,7 @@ Page({
          latitude2:'',
          longitude2:'',
          state:false,
+         showShare:false,
          user:true,
          map:false,
          num:'2',
@@ -55,7 +56,6 @@ Page({
                             }
                   }
                   ],
-                  a:'<image style="width: 100%;height: 100%;" src="{{img}}logo.jpg"></image>',
                   talk:[
                   {id:'0',type:"text",msg:'heiwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww'},
                   {id:'1',type:"text",msg:'hei'},
@@ -113,6 +113,7 @@ Page({
     var _dataJson = 4
     getApp().saveUserData(_url,3,_dataJson,function(e){
       if(!e.data){
+        wx.removeStorageSync('roomId')
         wx.showToast({
           title: '已退出',
           icon: 'success',
@@ -308,7 +309,7 @@ Page({
       },fail(res){console.log('sb',res)}
     })
     //   wx.playVoice({
-    //   filePath: 'https://korjo.fans-me.com/Upload//Korjo/korjotmp/Audio/20180102114318_hb3Ct2.silk',
+    //   filePath: 'https://www.korjo.cn/Upload//Korjo/korjotmp/Audio/20180102114318_hb3Ct2.silk',
     //   complete: function(res){
     //     console.log(res)
     //   }
@@ -481,7 +482,7 @@ Page({
   postMsg(message){
     var that = this
     var roomId = that.data.roomId
-    var url = 'https://korjo.fans-me.com/KorjoApi/SaveMituMsg'
+    var url = 'https://www.korjo.cn/KorjoApi/SaveMituMsg'
     var tyle = 2
     var json = { message:'',roomid:roomId,expressionid:1, userid:getApp().globalData.talkId, }
     json.message = message
@@ -556,7 +557,7 @@ Page({
          //      })
               if(roomId){
               wx.request({
-                    url:'https://korjo.fans-me.com/KorjoApi/GetMituRoomByID',
+                    url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
                     data:{
                       id:roomId
                     },
@@ -634,7 +635,7 @@ Page({
             // }
 //               if(!e ){//!e && !roomId
 //                   wx.request({
-//                     url:'https://korjo.fans-me.com/KorjoApi/GetMituRoomByID',
+//                     url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
 //                     data:{
 //                       id:36
 //                     },
@@ -664,7 +665,7 @@ Page({
 //                   })
 //                 }else{
 //                   wx.request({
-//                     url:'https://korjo.fans-me.com/KorjoApi/GetMituRoomByID',
+//                     url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
 //                     data:{
 //                       id:36
 //                     },
@@ -697,6 +698,12 @@ Page({
         // })
     
   },
+  // share(){
+  //   var that = this
+  //   that.setData({
+  //       state:true
+  //     })
+  // },
 // 点击头像邀请
   inviteUser(e){
     var that = this
@@ -712,9 +719,7 @@ Page({
       },10000)
 
     })
-      that.setData({
-        state:true
-      })
+    that.setData({showShare:true})
   },
   // 取消邀请
   cancel(){},
@@ -732,7 +737,7 @@ Page({
     var roomId = that.data.roomId
 
     wx.request({
-      url:'https://korjo.fans-me.com/KorjoApi/GetMituRoomByID',
+      url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
       data:{
         id : roomId,
       },
@@ -776,7 +781,7 @@ Page({
      // console.log(latlngjson_msg)
 
     wx.request({
-      url:'https://korjo.fans-me.com/KorjoApi/SaveMituRoom',
+      url:'https://www.korjo.cn/KorjoApi/SaveMituRoom',
       data:{
         dataJson : _json,
       },
@@ -880,7 +885,7 @@ Page({
     // console.log('roomId11',roomId)
     
     wx.request({
-      url:'https://korjo.fans-me.com/KorjoApi/GetMituRoomByID',
+      url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
       data:{
         id: roomId                                        //当前房间id
       },
@@ -897,7 +902,7 @@ Page({
         // 判断房间状态，如果sort不为0,
         // if(that.data.roomState){
           wx.request({
-              url:'https://korjo.fans-me.com/KorjoApi/GetMituMsgListByID',
+              url:'https://www.korjo.cn/KorjoApi/GetMituMsgListByID',
               data:{
                 id: roomId                                        //当前房间id
               },
@@ -1009,10 +1014,37 @@ a(options){
                       // console.log('车库 ',e)
                       var url_1 = e.data.latlngjson[0].headImgUrl
                       var url_2 = e.data.latlngjson[1].headImgUrl
+                      
                       // console.log('url_1',url_1,url_2,e.data.latlngjson)
                       that.setData({
                         talkId1,talkId2
                       })
+                      // var markersData=[
+                      //             {
+                      //                id: '',
+                      //                latitude: e.data.latlngjson[0].location1[0].latitude,
+                      //                longitude: e.data.latlngjson[0].location1[0].longitude,
+                      //                iconPath: '',
+                      //                width: '',
+                      //                height: ''
+                      //             },
+                      //             {
+                      //                id: '',
+                      //                latitude: e.data.latlngjson[1].location2[0].latitude,
+                      //                longitude: e.data.latlngjson[1].location2[0].longitude,
+                      //                iconPath: '',
+                      //                width: '',
+                      //                height: ''
+                      //             },
+                      //             {
+                      //                id: '',
+                      //                latitude: latitude,
+                      //                longitude: longitude,
+                      //                iconPath: '',
+                      //                width: '',
+                      //                height: ''
+                      //             }
+                      //             ]
                        
                         //身份2与本地身份一致
                         if( (latlngjson[1].idCard == getApp().globalData.talkId) || (talkId1 != getApp().globalData.talkId && latlngjson[1].idCard == 0) ){
@@ -1030,16 +1062,28 @@ a(options){
                                         // that.setData({markers})
                                       })
                                     }
+
                                     console.log('牛郎',)
+
+
 
                                     markers[1].latitude = e.data.latlngjson[0].location1[0].latitude
                                     markers[1].longitude = e.data.latlngjson[0].location1[0].longitude
+                                    // markers[1].id = marker_item[1]
+                                    // markers[1].width = 20
+                                    // markers[1].height = 20
+                                    // markers[1].iconPath = '/images/end.png'
+
                                     console.log( typeof e.data.latlngjson[1].location2)
                                     console.log(  e.data.latlngjson[1].location2)
                                     var rad = Math.random()
                                     markers[0].latitude = latitude
                                     markers[0].longitude  = longitude
                                     markers[0].id  = 0
+                                    markers[0].iconPath = '/images/start.png'
+                                    markers[0].width = 20
+                                    markers[0].height = 20
+
                                       console.log('location2',latitude,longitude, markers)
 
                                     var _location1 = [{latitude:markers[1].latitude,longitude:markers[1].longitude}]
@@ -1091,10 +1135,14 @@ a(options){
                         
                                     markers[1].latitude = e.data.latlngjson[1].location2[0].latitude
                                     markers[1].longitude = e.data.latlngjson[1].location2[0].longitude
+                                    markers[1].id = marker_item[1]
+                                    markers[1].iconPath = '/images/end.png'
 
                                     e.data.latlngjson[0].location1[0].latitude = markers[0].latitude = latitude
                                     e.data.latlngjson[0].location1[0].longitude = markers[0].longitude = longitude
-                                    markers[0].id = 0
+                                    markers[0].id = marker_item[0]
+                                    markers[0].iconPath = '/images/start.png'
+
                                     // console.log('1001',res.data.latlngjson[0].location1.latitude)
                                     
 
@@ -1267,6 +1315,8 @@ console.log('roomId',roomId)
                 latitude,longitude
               })
               var Storage = wx.getStorageSync('roomId')
+              if(op.roomId){
+              console.log('Storage',Storage)}
               if(op.roomId || Storage){
                     share = true
                     if(op.roomId){
@@ -1333,6 +1383,7 @@ console.log('roomId',roomId)
    */
   onUnload: function () {
   wx.stopCompass()
+  clearInterval(that.b)
   },
 
   /**
@@ -1356,12 +1407,16 @@ console.log('roomId',roomId)
     var that = this
     console.log('this.data.roomId',this.data.roomId)
       this.setData({
-        user:true
+        user:true,
       })
       return{
         title:'小织女在手 迷路不再有',
         path:`/pages/double/double?talkId=${getApp().globalData.talkId}&roomId=${that.data.roomId}`,
-        success(){},
+        success(){
+          that.setData({
+            state:true
+          })
+        },
         fail(){}
       }
       // wx.navigateTo({

@@ -1,12 +1,12 @@
 //app.js
 // var aldstat = require("./utils/ald-stat.js");
-const apiUrl = 'https://korjo.fans-me.com/KorjoApi/GetSessionKey';
+const apiUrl = 'https://www.korjo.cn/KorjoApi/GetSessionKey';
 var openid = ''
 App({
   globalData: {
     // img:'http://p.m.fans-me.com/VegaImg/'
     img:'/images/',
-    uploadImg:'https://korjo.fans-me.com',
+    uploadImg:'https://www.korjo.cn',
     userInfo:null,
     avatarUrl:'',
     talkId:'',
@@ -65,7 +65,7 @@ App({
                                       // console.log('11',that.globalData.avatarUrl)
                                       // that.saveUserinfo()
                                       var jsonData='1'
-                                      var a ='https://korjo.fans-me.com/KorjoApi/SaveUserInfo'
+                                      var a ='https://www.korjo.cn/KorjoApi/SaveUserInfo'
                                       var b={
                                                       openId:openid,
                                                       nickName:that.globalData.userInfo.nickName,
@@ -191,7 +191,7 @@ App({
 //                                           // 后台接受数据为string，需要转换为string对象
 //                                                     console.log('json',json_data)
 //                                       wx.request({
-//                                                 url: 'https://korjo.fans-me.com/KorjoApi/SaveMituRoom',
+//                                                 url: 'https://www.korjo.cn/KorjoApi/SaveMituRoom',
 //                                                    data: {
 //                                                     dataJson  :json_data,
 //                                                   },

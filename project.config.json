@@ -10,7 +10,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "1.4.4",
 	"appid": "wx3cfc14fc914fc9b3",
-	"projectname": "%E8%BF%B7%E9%80%94%E5%B0%8F%E7%BB%87%E5%A5%B3%E3%80%90%E6%8F%92%E5%A4%B4%E3%80%91",
+	"projectname": "%E8%BF%B7%E9%80%94%E3%80%90%E7%BB%87%E5%A5%B3%E3%80%91",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -21,13 +21,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "double",
 					"pathName": "pages/double/double",
-					"query": "1roomId=499"
+					"query": "roomId=504"
 				},
 				{
 					"id": 1,
