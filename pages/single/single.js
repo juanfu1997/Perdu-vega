@@ -66,7 +66,7 @@ Page({
   hiddenBox(){
     wx.showModal({
       title: '',
-      content: '是否推出地图',
+      content: '是否退出地图',
       success: function(res) {
         if (res.confirm) {
           console.log('用户点击确定')

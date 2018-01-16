@@ -1064,8 +1064,47 @@ a(options){
                                     }
 
                                     console.log('牛郎',)
-
-
+                                    var marks = []
+                                    var markersData=[
+                                      {
+                                         id: '',
+                                         latitude: e.data.latlngjson[0].location1[0].latitude,
+                                         longitude: e.data.latlngjson[0].location1[0].longitude,
+                                         iconPath: '',
+                                         width: '',
+                                         height: ''
+                                      },
+                                      // {
+                                      //    id: '',
+                                      //    latitude: e.data.latlngjson[1].location2[0].latitude,
+                                      //    longitude: e.data.latlngjson[1].location2[0].longitude,
+                                      //    iconPath: '',
+                                      //    width: '',
+                                      //    height: ''
+                                      // },
+                                      {
+                                         id: '',
+                                         latitude: latitude,
+                                         longitude: longitude,
+                                         iconPath: '',
+                                         width: '',
+                                         height: ''
+                                      }
+                                      ]
+                                    for ( var marker_item in markersData)
+                                         {
+                                           console.log("item=" + marker_item);
+                                           var markerItem = {
+                                             id: marker_item,
+                                             latitude: markersData[marker_item].latitude,
+                                             longitude: markersData[marker_item].longitude,
+                                             iconPath: "/images/start.png",
+                                             width: 22,
+                                             height: 32
+                                           };
+                                           marks.push(markerItem);
+                                         }
+                                    console.log('marks',marks)
 
                                     markers[1].latitude = e.data.latlngjson[0].location1[0].latitude
                                     markers[1].longitude = e.data.latlngjson[0].location1[0].longitude

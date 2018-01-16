@@ -181,20 +181,20 @@ page{
 	border-radius: 20rpx;
 	
 }
-.iframe button{
+.share{
 	width: 250rpx;
 	height: 80rpx;
 	text-align: center;
 	background-color: #79b52e;
 	line-height: 80rpx;
+	color:#fff;
 }
 .emoticon{
 	width: 8%;
 	background-color: transparent;
 }
 .msg{
-	width: 200rpx;
-	height: 200rpx;
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;

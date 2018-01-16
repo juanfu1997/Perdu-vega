@@ -81,7 +81,7 @@
 					</view>
 				</view>
 				<image class="compass2" style="transform: rotate({{compass}}deg);" mode="widthFix" src="{{img}}compass.png" catchtap="compassm" />
-				<input class="input" cursor-spacing="100" confirm-type="send" value="{{input}}" focus="{{keyboard}}" bindconfirm="send" hidden="{{text}}"></input>
+				<input class="input" cursor-spacing="100" confirm-type="send" value="{{input}}" focus="{{keyboard}}" bindfocus="bindfocus" bindconfirm="send" hidden="{{text}}"></input>
 				<button class="recButton" hover-class="record" bindtouchstart="startRecord"	bindtouchend="stopRecord" hidden="{{!text}}">按住 说话</button>
 				<!-- <image class="emoticon" mode="widthFix" data-box="icon_box" bindtap="hiddenBox" src="{{img}}emoticon.png"></image> -->
 				<image class="emoticon" mode="widthFix" bindtap="recButton" src="{{img}}{{inputType}}.png"></image>
