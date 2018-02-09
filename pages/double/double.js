@@ -106,13 +106,13 @@ Page({
     near = demo =true
     that.setData({near,demo})
   },
-  endTalk(){
+  endTalk(e){
     var that = this
     that.demo()
     var _url = 'https://www.korjo.cn/KorjoApi/DeleteMituRoom'
-    var _dataJson = 4
-    getApp().saveUserData(_url,3,_dataJson,function(e){
-      if(!e.data){
+    var _dataJson = {id:4}
+    getApp().saveUserData(_url,3,_dataJson,function(re){
+      if(!re.data){
         wx.removeStorageSync('roomId')
         wx.showToast({
           title: '已退出',
@@ -121,6 +121,7 @@ Page({
         })
       }
       console.log('guanbiliaotian',_url,_dataJson)
+      $.goPage(e)
     })
   },
   // btn_no(){
@@ -170,21 +171,30 @@ Page({
     var longitude = that.data.longitude
     that.mapCtx.moveToLocation()
   },
+  //获取两点路线距离
   walkRoute(location1,location2,callback){
     const that = this;
         var lat1 = location1.longitude + "," + location1.latitude
           var lat2 = location2.longitude + "," + location2.latitude
     console.log('lat12',lat1,lat2)
           $.ranging(lat1,lat2,function(e){
-            console.log(e)
             var distance = e.data.results[0].distance
             // if(that.data.distance < 20){console.log('distance',that.data.distance)} //测试用
             var near = that.data.near
-            if(distance <30 && distance != 0){
-               near = true
+            var demo = that.data.demo
+            var invitation = that.data.invitation
+            if(distance <30){
+               invitation = demo = near = true
+               that.setData({
+                  near,
+                  demo,
+                  invitation,
+                })
             }
-            // console.log('distance',distance)
-            that.setData({distance:distance,near})
+            console.log('distance',distance)
+            that.setData({
+              distance:distance,
+            })
           })
        // const location = wx.getStorageSync('userLocation');
        // const chosen = wx.getStorageSync('chosenObj');
@@ -973,7 +983,7 @@ Page({
     
             })
         // }
-        callback(res)
+        callback&&callback(res)
 
       }
     })
@@ -1060,58 +1070,57 @@ a(options){
                                         // // markers[0].latitude = polyline[0].points.latitude
                                         // console.log('walkRoute',res)
                                         // that.setData({markers})
+                                        markers[1].latitude = e.data.latlngjson[0].location1[0].latitude
+                                    markers[1].longitude = e.data.latlngjson[0].location1[0].longitude
+                                    markers[0].latitude = latitude
+                                    markers[0].longitude  = longitude
                                       })
                                     }
 
                                     console.log('牛郎',)
                                     var marks = []
-                                    var markersData=[
-                                      {
-                                         id: '',
-                                         latitude: e.data.latlngjson[0].location1[0].latitude,
-                                         longitude: e.data.latlngjson[0].location1[0].longitude,
-                                         iconPath: '',
-                                         width: '',
-                                         height: ''
-                                      },
-                                      // {
-                                      //    id: '',
-                                      //    latitude: e.data.latlngjson[1].location2[0].latitude,
-                                      //    longitude: e.data.latlngjson[1].location2[0].longitude,
-                                      //    iconPath: '',
-                                      //    width: '',
-                                      //    height: ''
-                                      // },
-                                      {
-                                         id: '',
-                                         latitude: latitude,
-                                         longitude: longitude,
-                                         iconPath: '',
-                                         width: '',
-                                         height: ''
-                                      }
-                                      ]
-                                    for ( var marker_item in markersData)
+                                    // var markersData=[
+                                    //   {
+                                    //      id: '0',
+                                    //      latitude: e.data.latlngjson[0].location1[0].latitude,
+                                    //      longitude: e.data.latlngjson[0].location1[0].longitude,
+                                    //      iconPath: '',
+                                    //      width: '',
+                                    //      height: ''
+                                    //   },
+                                    //   // {
+                                    //   //    id: '',
+                                    //   //    latitude: e.data.latlngjson[1].location2[0].latitude,
+                                    //   //    longitude: e.data.latlngjson[1].location2[0].longitude,
+                                    //   //    iconPath: '',
+                                    //   //    width: '',
+                                    //   //    height: ''
+                                    //   // },
+                                    //   {
+                                    //      id: '1',
+                                    //      latitude: latitude,
+                                    //      longitude: longitude,
+                                    //      iconPath: '',
+                                    //      width: '',
+                                    //      height: ''
+                                    //   }
+                                    //   ]
+                                    var marker_item = [0,1]
+
+                                    for ( var marker_item in markers)
                                          {
                                            console.log("item=" + marker_item);
-                                           var markerItem = {
-                                             id: marker_item,
-                                             latitude: markersData[marker_item].latitude,
-                                             longitude: markersData[marker_item].longitude,
-                                             iconPath: "/images/start.png",
-                                             width: 22,
-                                             height: 32
-                                           };
-                                           marks.push(markerItem);
+                                           id:marker_item
+                                           marks.push(markers);
                                          }
                                     console.log('marks',marks)
 
                                     markers[1].latitude = e.data.latlngjson[0].location1[0].latitude
                                     markers[1].longitude = e.data.latlngjson[0].location1[0].longitude
-                                    // markers[1].id = marker_item[1]
-                                    // markers[1].width = 20
-                                    // markers[1].height = 20
-                                    // markers[1].iconPath = '/images/end.png'
+                                    markers[1].id = 1
+                                    markers[1].width = 20
+                                    markers[1].height = 20
+                                    markers[1].iconPath = '/images/end.png'
 
                                     console.log( typeof e.data.latlngjson[1].location2)
                                     console.log(  e.data.latlngjson[1].location2)
@@ -1137,7 +1146,7 @@ a(options){
                                     //     that.setData({ markers })
                                     //     })
                                     // }
-                                    that.setData({tips:false,invitation:true,roomState:true,markers,showMarkers:true,UserInfo})
+                                    that.setData({tips:false,invitation:true,roomState:true,markers:markers,showMarkers:true,UserInfo})
                                     // if(!polyline.length){
                                     //   var location1 = e.data.latlngjson[0].location1[0]
                                     //   var location2 = e.data.latlngjson[1].location2[0]
@@ -1161,6 +1170,7 @@ a(options){
                                       })
                                     }
                                 var tips = that.data.tips
+                                var invitation = that.data.invitation
                                   if(tips){
                                     wx.showToast({
                                       title: '邀请用户已接受',
@@ -1168,18 +1178,22 @@ a(options){
                                       duration: 2000
                                     })
                                     tips =false
+                                    that.setData({
+                                      invitation:true,
+                                      tips,
+                                    })
                                   }
 
                                     console.log('织女',e.data.latlngjson[0].idCard,that.data.talkId1,getApp().globalData.talkId)
                         
                                     markers[1].latitude = e.data.latlngjson[1].location2[0].latitude
                                     markers[1].longitude = e.data.latlngjson[1].location2[0].longitude
-                                    markers[1].id = marker_item[1]
+                                    markers[1].id = 1
                                     markers[1].iconPath = '/images/end.png'
 
                                     e.data.latlngjson[0].location1[0].latitude = markers[0].latitude = latitude
                                     e.data.latlngjson[0].location1[0].longitude = markers[0].longitude = longitude
-                                    markers[0].id = marker_item[0]
+                                    markers[0].id = 0
                                     markers[0].iconPath = '/images/start.png'
 
                                     // console.log('1001',res.data.latlngjson[0].location1.latitude)
@@ -1331,7 +1345,7 @@ a(options){
     var roomId = that.data.roomId
     var polyline = that.data.polyline =[]
     // var myAmapFun = new amapFile.AMapWX({key: '高德Key'});
-console.log('roomId',roomId)
+console.log('roomId',roomId,op)
       wx.showLoading({
         title: '正在定位中···',
       })

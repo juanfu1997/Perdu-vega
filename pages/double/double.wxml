@@ -61,7 +61,7 @@
 							<text wx:if="{{item.type=='text'}}">{{item.msg}}</text>
 							<image wx:if="{{item.type=='picture'}}" class="msg_img" mode="widthFix" src="{{item.msg}}" bindtap="previewImage" data-src="{{item.msg}}" ></image>
 							<view wx:if="{{item.type=='video'}}" class="msg_video" bindtap="playVideo" >点击播放视频<image  src="{{img}}video_msg2.png" wx:if="{{item.type=='video'}}" style="width: 50rpx; height: 50rpx;"  /></view>
-							<video wx:if="{{item.type=='video'}}" src="{{item.msg}}" id="myVideo" hidden="{{video}}" bindfullscreenchange="bindfullscreenchange"></video>
+							<video wx:if="{{item.type=='video'}}" style="width: 0;height: 0;display: flex;" src="{{item.msg}}" id="myVideo"  bindfullscreenchange="bindfullscreenchange"></video>
 							<view wx:if="{{item.type=='audio'}}" class="msg_video" data-src="{{item.msg}}" bindtap="playVoice">点击播放录音<image  src="{{img}}video_msg2.png" wx:if="{{item.type=='audio'}}" style="width: 50rpx; height: 50rpx;"  /></view>
 							<!-- <audio id="myAudio" wx:if="{{item.type=='audio'}}" src="{{item.msg}}" data-src="{{item.msg}}" bindtap="playVoice"></audio> -->
 						<!-- </view> -->
@@ -122,7 +122,7 @@
 </view>
 <view class="near" wx:if="{{meeted}}">
 	<image src="{{img}}meeted.png" mode="widthFix"></image>
-	<view class="btn_pass" catchtap="endTalk">结束聊天</view>
+	<view class="btn_pass" data-page="index" catchtap="endTalk">结束聊天</view>
 	<!-- <view class="btn_choiced">
 		<view class="btn_near" bindtap="btn_yes">是</view>
 		<view class="btn_near" bindtap="btn_no">否</view>

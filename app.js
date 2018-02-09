@@ -136,7 +136,7 @@ App({
       wx.request({
         url:_url,
          data: {
-        id  : _json,
+        id  : _json.id,
         },
         // dataType: "json",
         header: {

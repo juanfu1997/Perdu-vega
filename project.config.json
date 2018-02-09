@@ -8,7 +8,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.4.4",
+	"libVersion": "1.6.4",
 	"appid": "wx3cfc14fc914fc9b3",
 	"projectname": "%E8%BF%B7%E9%80%94%E3%80%90%E7%BB%87%E5%A5%B3%E3%80%91",
 	"condition": {
@@ -21,13 +21,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 1,
 			"list": [
 				{
 					"id": 0,
 					"name": "double",
 					"pathName": "pages/double/double",
-					"query": "roomId=527"
+					"query": "roomId=551"
 				},
 				{
 					"id": 1,

@@ -45,6 +45,7 @@ page{
 	left: 80rpx;
 	top: 30rpx;
 	width: 80rpx;
+	height:60rpx;
 	transform: translateX(-50%);
 }
 .compass{
@@ -59,6 +60,7 @@ page{
 	left:80rpx;
 	bottom: 5%;
 	width: 80rpx;
+	height: 80rpx;
 	transform: translateX(-50%);
 }
 .info{

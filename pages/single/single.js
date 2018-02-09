@@ -69,9 +69,11 @@ Page({
       content: '是否退出地图',
       success: function(res) {
         if (res.confirm) {
-          console.log('用户点击确定')
+          wx.navigateTo({
+          url: '/pages/index/index',
+        })
         } else if (res.cancel) {
-          console.log('用户点击取消')
+          // console.log('用户点击取消')
         }
       }
     })
@@ -260,9 +262,8 @@ Page({
         markers[0].latitude = latitude
         markers[0].longitude = longitude
           that.setData({latitude,longitude,markers})
-
-
-
+        that.compass()
+          
       }
     })
   
