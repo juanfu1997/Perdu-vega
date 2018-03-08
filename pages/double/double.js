@@ -34,7 +34,7 @@ Page({
                     height: 30,
 
                     callout:{
-                              content:"1111111111111111111",
+                              content:"",
                               color:"#000",
                               bgColor:'red',
                               display:'ALWAYS',
@@ -49,7 +49,7 @@ Page({
                     height: 30,
 
                     callout:{
-                              content:"222222222222",
+                              content:"",
                               color:"#000",
                               bgColor:'red',
                               display:'ALWAYS',
@@ -88,7 +88,8 @@ Page({
         video:true,
         demo: false,
         meeted:false,
-        near:false,                             
+        near:false,
+        IsRoomFull:false,                             
 
   },
   meeted(){
@@ -111,27 +112,25 @@ Page({
     that.demo()
     var _url = 'https://www.korjo.cn/KorjoApi/DeleteMituRoom'
     var _dataJson = {id:4}
+    console.log(that.data.roomId)
     getApp().saveUserData(_url,3,_dataJson,function(re){
       if(!re.data){
-        wx.removeStorageSync('roomId')
         wx.showToast({
           title: '已退出',
           icon: 'success',
           duration: 2000
         })
+        that.setData({
+          share:false,
+        })
       }
       console.log('guanbiliaotian',_url,_dataJson)
+      clearInterval(that.b)
+      wx.removeStorageSync('roomId')
       $.goPage(e)
     })
   },
-  // btn_no(){
-  //   var that = this
-  //   var near = that.data.near
-  //   var demo = that.data.demo
-  //   var meeted = that.data.meeted
-  //   near = demo = meeted =false
-  //   that.setData({near,demo,meeted})
-  // },
+  
   btn_yes(){
     var that = this
     // var near =that.data.near
@@ -233,33 +232,16 @@ Page({
           },
           fail: function(info) {}
        });
-       // this.setData({
-       //     latitude: location1.latitude,
-       //     longitude: location1.longitude,
-       //     //地图
-       //     markers: [{
-       //        //iconPath: "../../images/marker.png",
-       //        id: 0,
-       //        latitude: location1.lat,
-       //        longitude: location1.lng,
-       //        width: 30,
-       //        height: 30,
-       //        arrowLine: true
-       //     }]//,
-       //     // chosen: {
-       //     //    title: chosen.title,
-       //     //    address: chosen.address
-       //     // }
-       // });
+       
   },
   changeScale(e){
     console.log('changeScale',e)
     var that = this
     var scale = that.data.scale
     var type = e.currentTarget.dataset.type
-    if(type == "big" && scale < 18){
+    if(type == "big" && scale <= 18){
       scale++
-    }else if(type == "small"){
+    }else if(type == "small" && scale >= 5){
       scale--
     }
     that.setData({scale})
@@ -318,22 +300,7 @@ Page({
         }
       },fail(res){console.log('sb',res)}
     })
-    //   wx.playVoice({
-    //   filePath: 'https://www.korjo.cn/Upload//Korjo/korjotmp/Audio/20180102114318_hb3Ct2.silk',
-    //   complete: function(res){
-    //     console.log(res)
-    //   }
-    // })
-    // const innerAudioContext = wx.createInnerAudioContext('myAudio')
-    //   innerAudioContext.autoplay = true
-    //   innerAudioContext.src = src
-    //   innerAudioContext.onPlay(() => {
-    //       console.log('开始播放')
-    //   })
-    //   innerAudioContext.onError((res) => {
-    //       console.log(res.errMsg)
-    //       console.log(res.errCode)
-    //   })
+    
   },
   startRecord(){
     var that = this
@@ -344,16 +311,7 @@ Page({
       wx.startRecord({
         success: function(res) {
           console.log('录音')
-      //     const innerAudioContext = wx.createInnerAudioContext()
-      // innerAudioContext.autoplay = true
-      // innerAudioContext.src = res.data
-      // innerAudioContext.onPlay(() => {
-      //     console.log('开始播放')
-      // })
-      // innerAudioContext.onError((res) => {
-      //     console.log(res.errMsg)
-      //     console.log(res.errCode)
-      // })
+
       wx.playVoice({
               filePath: res.tempFilePath,
               fail(res){console.log('jieguo',res)}
@@ -395,15 +353,6 @@ Page({
   },
 
 
-  // close_box(){
-  //   this.hiddenBox("close_box")
-  // },
-  // icon_box(){
-  //   this.hiddenBox("icon_box")
-  // },
-  // tool(){
-  //   this.hiddenBox("tool")
-  // },
   hiddenBox(e){
     var that = this
     // var close_box = that.data.close_box
@@ -509,23 +458,12 @@ Page({
     var talk = that.data.talk
     var box = that.data.box
     box.close_box = box.icon_box = box.tool =true
-    // talk.push({id:'1',type:"picture",msg:'/images/face.gif'},)
-    // console.log(this.data.talk)
+
     that.setData({
       talk,
       box
     })
 
-//     wx.chooseImage({
-//   count: 1, // 默认9
-//   sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-//   sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-//   success: function (res) {
-//     // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-//     var tempFilePaths = res.tempFilePaths
-//     console.log('tempFiles',res.tempFiles)
-//   }
-// })
   },
 
   accept(){
@@ -533,187 +471,174 @@ Page({
       invite:true,
       map:false
     })
-    // wx.getLocation({
-    //   type: 'wgs84',
-    //   success: function(res) {
-    //     var latitude2 = res.latitude
-    //     var longitude2 = res.longitude
-    //     var speed2 = res.speed
+
         var accuracy2 = res.accuracy
-    //     that.setData({
-    //       latitude2:latitude,
-    //       longitude2:longitude
-    //     })
-    //   }
-    // })
+
 
 
   },
 
-  location(e){
-    var that = this
-    var latitude = that.data.latitude
-    var longitude = that.data.longitude
-    var roomId = that.data.roomId
-    var markers = that.data.markers
-         // wx.getLocation({
-         //    type:'gcj02',
-         //    success(res){
-         //      latitude = res.latitude
-         //      longitude = res.longitude
-         //      console.log('location',res)
-         //      that.setData({
-         //        latitude,longitude
-         //      })
-              if(roomId){
-              wx.request({
-                    url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
-                    data:{
-                      id:roomId
-                    },
-                    header:{
-                    'content-type': 'application/x-www-form-urlencoded'
-                  },
-                  method:'POST',
-                  success(res){
-                    console.log('房间id',roomId)
-                        res.data.latlngjson = JSON.parse(res.data.latlngjson)
+//   location(e){
+//     var that = this
+//     var latitude = that.data.latitude
+//     var longitude = that.data.longitude
+//     var roomId = that.data.roomId
+//     var markers = that.data.markers
+//          // wx.getLocation({
+//          //    type:'gcj02',
+//          //    success(res){
+//          //      latitude = res.latitude
+//          //      longitude = res.longitude
+//          //      console.log('location',res)
+//          //      that.setData({
+//          //        latitude,longitude
+//          //      })
+//               if(roomId){
+//               wx.request({
+//                     url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
+//                     data:{
+//                       id:roomId
+//                     },
+//                     header:{
+//                     'content-type': 'application/x-www-form-urlencoded'
+//                   },
+//                   method:'POST',
+//                   success(res){
+//                     console.log('房间id',roomId)
+//                         res.data.latlngjson = JSON.parse(res.data.latlngjson)
                         
                       
-                      // console.log(typeof res.data.latlngjson[0].location1[0].latitude)
+//                       // console.log(typeof res.data.latlngjson[0].location1[0].latitude)
                       
                       
-                      // res.data.latlngjson[0].location2[0]   = JSON.parse(res.data.latlngjson[0].location2[0] )
+//                       // res.data.latlngjson[0].location2[0]   = JSON.parse(res.data.latlngjson[0].location2[0] )
                       
-                      if(that.data.talkId1 == getApp().globalData.talkId){
-                        // console.log('织女',res.data.latlngjson[0].idCard,that.data.talkId1,getApp().globalData.talkId)
+//                       if(that.data.talkId1 == getApp().globalData.talkId){
+//                         // console.log('织女',res.data.latlngjson[0].idCard,that.data.talkId1,getApp().globalData.talkId)
                         
-                        // markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
-                        // markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
-                        markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
-                        markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
+//                         // markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
+//                         // markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
+//                         markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
+//                         markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
 
-                        // res.data.latlngjson[0].location1 = JSON.parse(res.data.latlngjson[0].location1)
-                        // console.log( 'typeof',  res.data.latlngjson[0].location1)
-                        // console.log(typeof res.data.latlngjson[0].location1)
-                        res.data.latlngjson[0].location1[0].latitude = markers[0].latitude = latitude
-                        res.data.latlngjson[0].location1[0].longitude = markers[0].longitude = longitude
-                        // console.log('1001',res.data.latlngjson[0].location1.latitude)
+//                         // res.data.latlngjson[0].location1 = JSON.parse(res.data.latlngjson[0].location1)
+//                         // console.log( 'typeof',  res.data.latlngjson[0].location1)
+//                         // console.log(typeof res.data.latlngjson[0].location1)
+//                         res.data.latlngjson[0].location1[0].latitude = markers[0].latitude = latitude
+//                         res.data.latlngjson[0].location1[0].longitude = markers[0].longitude = longitude
+//                         // console.log('1001',res.data.latlngjson[0].location1.latitude)
                         
 
-                        // var _location1 = JSON.stringify({latitude:latitude,longitude:longitude})
-                        // var _location2 = JSON.stringify({latitude:markers[1].latitude,longitude:markers[1].longitude})
-                        var _location1 = [{latitude:latitude,longitude:longitude}]
-                        var _location2 = [{latitude:markers[1].latitude,longitude:markers[1].longitude}]
-                        // console.log(_location1,_location2,1,roomId)
+//                         // var _location1 = JSON.stringify({latitude:latitude,longitude:longitude})
+//                         // var _location2 = JSON.stringify({latitude:markers[1].latitude,longitude:markers[1].longitude})
+//                         var _location1 = [{latitude:latitude,longitude:longitude}]
+//                         var _location2 = [{latitude:markers[1].latitude,longitude:markers[1].longitude}]
+//                         // console.log(_location1,_location2,1,roomId)
 
-                        that.creatRoom(_location1,_location2,'1',roomId,that.data.talkId1,that.data.talkId2)
-                        // console.log('111',_location1,_location2,1,roomId,that.data.talkId1,that.data.talkId2)
+//                         that.creatRoom(_location1,_location2,'1',roomId,that.data.talkId1,that.data.talkId2)
+//                         // console.log('111',_location1,_location2,1,roomId,that.data.talkId1,that.data.talkId2)
 
 
-                      }else{
-                        console.log('牛郎',res)
-                        markers[0].latitude = res.data.latlngjson[0].location1[0].latitude
-                        markers[0].longitude = res.data.latlngjson[0].location1[0].latitude
-                        // console.log(  res.data.latlngjson[1].location2)
-                        // res.data.latlngjson[1].location2 = JSON.parse(res.data.latlngjson[1].location2)
+//                       }else if(that.data.talkId2 == getApp().globalData.talkId){
+//                         console.log('牛郎',res)
+//                         markers[0].latitude = res.data.latlngjson[0].location1[0].latitude
+//                         markers[0].longitude = res.data.latlngjson[0].location1[0].latitude
+//                         // console.log(  res.data.latlngjson[1].location2)
+//                         // res.data.latlngjson[1].location2 = JSON.parse(res.data.latlngjson[1].location2)
 
-                        res.data.latlngjson[1].location2[0].latitude = markers[1].latitude = latitude
-                        res.data.latlngjson[1].location2[0].longitude = markers[1].longitude  = longitude
-                        var _location1 = [{latitude:markers[0].latitude,longitude:markers[1].longitude}]
-                        var _location2 = [{latitude:latitude,longitude:longitude}]
+//                         res.data.latlngjson[1].location2[0].latitude = markers[1].latitude = latitude
+//                         res.data.latlngjson[1].location2[0].longitude = markers[1].longitude  = longitude
+//                         var _location1 = [{latitude:markers[0].latitude,longitude:markers[1].longitude}]
+//                         var _location2 = [{latitude:latitude,longitude:longitude}]
                         
-                        that.creatRoom(_location1,_location2,1,roomId,that.data.talkId1,that.data.talkId2)
+//                         that.creatRoom(_location1,_location2,1,roomId,that.data.talkId1,that.data.talkId2)
 
-                      }
-                      that.setData({markers})
-                      console.log('that.data.markers[0]',that.data.talkId1,that.data.talkId2,getApp().globalData.talkId)
+//                       }else{
+//                         $.modal('有人比你先到了哦!')
+//                       }
+//                       that.setData({markers})
+//                       console.log('that.data.markers[0]',that.data.talkId1,that.data.talkId2,getApp().globalData.talkId)
                       
-                    }
+//                     }
                   
-                  })
-                     getApp().getUserInfo(function(){that.updataRoomInfo(that.roomId)})
-            }
-            // else{
-            //   console.log('roomidnot')
-            //   markers[0].latitude = latitude
-            //   markers[0].longitude = longitude
-            //   markers[0].iconPath = getApp().globalData.avatarUrl
-            //   that.setData({
-            //     markers
-            //   })
-            // }
-//               if(!e ){//!e && !roomId
-//                   wx.request({
-//                     url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
-//                     data:{
-//                       id:36
-//                     },
-//                     header:{
-//                     'content-type': 'application/x-www-form-urlencoded'
-//                   },
-//                   method:'POST',
-//                   success(res){
-//                     res.data.latlngjson = JSON.parse(res.data.latlngjson)
-//                     console.log('织女',res.data)
-//                     markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
-//                     markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
-
-//                     res.data.latlngjson[0].location1 = JSON.parse(res.data.latlngjson[0].location1)
-//                     // res.data.latlngjson[0].location1.longitude= JSON.parse(res.data.latlngjson[0].location1.longitude)
-//                     console.log('room',res)
-//                     console.log('WOWOWOWO',res.data.latlngjson[0].location1.longitude,'1')
-//                     console.log('room',res.data.latlngjson[0].location1.latitude)
-//                     res.data.latlngjson[0].location1.latitude = latitude
-//                    res.data.latlngjson[0].location1.longitude = longitude
-
-//                    var _location1 = JSON.stringify({latitude:latitude,longitude:longitude})
-//                    var _location2 = JSON.stringify({latitude:markers[1].latitude,longitude:markers[1].longitude})
-//                    console.log(_location1,_location2,1,roomId)
-//                     that.creatRoom(_location1,_location2,1,36)
-//                   }
 //                   })
-//                 }else{
-//                   wx.request({
-//                     url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
-//                     data:{
-//                       id:36
-//                     },
-//                     header:{
-//                     'content-type': 'application/x-www-form-urlencoded'
-//                   },
-//                   method:'POST',
-//                   success(res){
-//                     res.data.latlngjson = JSON.parse(res.data.latlngjson)
-//                     console.log( '牛郎',res.data)
-//                     markers[0].latitude = res.data.latlngjson[0].location1[0].latitude
-//                     markers[0].longitude = res.data.latlngjson[0].location1[0].latitude
+//                      getApp().getUserInfo(function(){that.updataRoomInfo(that.roomId)})
+//             }
+//             // else{
+//             //   console.log('roomidnot')
+//             //   markers[0].latitude = latitude
+//             //   markers[0].longitude = longitude
+//             //   markers[0].iconPath = getApp().globalData.avatarUrl
+//             //   that.setData({
+//             //     markers
+//             //   })
+//             // }
+// //               if(!e ){//!e && !roomId
+// //                   wx.request({
+// //                     url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
+// //                     data:{
+// //                       id:36
+// //                     },
+// //                     header:{
+// //                     'content-type': 'application/x-www-form-urlencoded'
+// //                   },
+// //                   method:'POST',
+// //                   success(res){
+// //                     res.data.latlngjson = JSON.parse(res.data.latlngjson)
+// //                     console.log('织女',res.data)
+// //                     markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
+// //                     markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
 
-//                     // res.data.latlngjson[1].location2 = JSON.parse(res.data.latlngjson[1].location2)
-// // console.log('_location2',res.data.latlngjson[1].location2)
-// // console.log('_location2', res.data.latlngjson[1].location2[0].latitude)
-//                     res.data.latlngjson[1].location2[0].latitude = latitude
-//                     res.data.latlngjson[1].location2[0].longitude = longitude
-//                     var _location1 = JSON.stringify({latitude:markers[0].latitude,longitude:markers[1].longitude})
-//                     var _location2 = JSON.stringify({latitude:latitude,longitude:longitude})
+// //                     res.data.latlngjson[0].location1 = JSON.parse(res.data.latlngjson[0].location1)
+// //                     // res.data.latlngjson[0].location1.longitude= JSON.parse(res.data.latlngjson[0].location1.longitude)
+// //                     console.log('room',res)
+// //                     console.log('WOWOWOWO',res.data.latlngjson[0].location1.longitude,'1')
+// //                     console.log('room',res.data.latlngjson[0].location1.latitude)
+// //                     res.data.latlngjson[0].location1.latitude = latitude
+// //                    res.data.latlngjson[0].location1.longitude = longitude
 
-//                     console.log(_location1,_location2,1,roomId)
-//                     that.creatRoom(_location1,_location2,1,36)
-//                   }
-//                   })
-//                 }
+// //                    var _location1 = JSON.stringify({latitude:latitude,longitude:longitude})
+// //                    var _location2 = JSON.stringify({latitude:markers[1].latitude,longitude:markers[1].longitude})
+// //                    console.log(_location1,_location2,1,roomId)
+// //                     that.creatRoom(_location1,_location2,1,36)
+// //                   }
+// //                   })
+// //                 }else{
+// //                   wx.request({
+// //                     url:'https://www.korjo.cn/KorjoApi/GetMituRoomByID',
+// //                     data:{
+// //                       id:36
+// //                     },
+// //                     header:{
+// //                     'content-type': 'application/x-www-form-urlencoded'
+// //                   },
+// //                   method:'POST',
+// //                   success(res){
+// //                     res.data.latlngjson = JSON.parse(res.data.latlngjson)
+// //                     console.log( '牛郎',res.data)
+// //                     markers[0].latitude = res.data.latlngjson[0].location1[0].latitude
+// //                     markers[0].longitude = res.data.latlngjson[0].location1[0].latitude
+
+// //                     // res.data.latlngjson[1].location2 = JSON.parse(res.data.latlngjson[1].location2)
+// // // console.log('_location2',res.data.latlngjson[1].location2)
+// // // console.log('_location2', res.data.latlngjson[1].location2[0].latitude)
+// //                     res.data.latlngjson[1].location2[0].latitude = latitude
+// //                     res.data.latlngjson[1].location2[0].longitude = longitude
+// //                     var _location1 = JSON.stringify({latitude:markers[0].latitude,longitude:markers[1].longitude})
+// //                     var _location2 = JSON.stringify({latitude:latitude,longitude:longitude})
+
+// //                     console.log(_location1,_location2,1,roomId)
+// //                     that.creatRoom(_location1,_location2,1,36)
+// //                   }
+// //                   })
+// //                 }
  
 
-        //     }
-        // })
+//         //     }
+//         // })
     
-  },
-  // share(){
-  //   var that = this
-  //   that.setData({
-  //       state:true
-  //     })
-  // },
+//   },
+
 // 点击头像邀请
   inviteUser(e){
     var that = this
@@ -729,7 +654,10 @@ Page({
       },10000)
 
     })
-    that.setData({showShare:true})
+    that.setData({
+      showShare:true,
+      share:true,
+    })
   },
   // 取消邀请
   cancel(){},
@@ -885,6 +813,30 @@ Page({
     // },10000)
     
   },
+  video(title,singer,coverImgUrl,src){
+    var that = this
+    const backgroundAudioManager = wx.getBackgroundAudioManager()
+    that.backgroundAudioManager = backgroundAudioManager
+    that.backgroundAudioManager.title = title
+    that.backgroundAudioManager.singer = singer
+    that.backgroundAudioManager.coverImgUrl = coverImgUrl
+    // that.backgroundAudioManager.src = 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E061FF02C31F716658E5C81F5594D561F2E88B854E81CAAB7806D5E4F103E55D33C16F3FAC506D1AB172DE8600B37E43FAD&fromtag=46' // 设置了 src 之后会自动播放
+    that.backgroundAudioManager.src = src
+    //  that.backgroundAudioManager.onEnded((res) => {
+    //   that.backgroundAudioManager.title = title
+    //   that.backgroundAudioManager.singer = singer
+    //   that.backgroundAudioManager.coverImgUrl = coverImgUrl
+    //   // that.backgroundAudioManager.src = 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E061FF02C31F716658E5C81F5594D561F2E88B854E81CAAB7806D5E4F103E55D33C16F3FAC506D1AB172DE8600B37E43FAD&fromtag=46' // 设置了 src 之后会自动播放
+    //   that.backgroundAudioManager.src = src
+    //   that.backgroundAudioManager.play()
+    // })
+  },
+  msgHint(video_src){
+    var that = this
+    that.video('音频','迷途小织女','',video_src)
+    console.log('音频')
+
+  },
   // 判断房间状态以及获取消息【并列关系】
   checkRoom(callback){
     var that = this
@@ -902,7 +854,7 @@ Page({
       header:{
         'content-type': 'application/x-www-form-urlencoded'
       },
-      method:'POST',
+      method:'GET',
       success(res){
         // console.log(res)
         // msgList = res.data
@@ -926,6 +878,11 @@ Page({
                 var moveTo = msgList.length
                 // var moveTo =  that.data.moveTo
                 if(addNum){
+                  //提示音
+                  // that.msgHint('http://music.163.com/outchain/player?type=3&id=905482296')
+                  that.video('音频','迷途小织女','','https://www.korjo.cn/xcx/loverBarrage/music/msgHint.mp3')
+    console.log('音频')
+                  console.log('音频')
                   for(var i = 0; res.data.length > msgList.length; i++){
                     msgList.push({id:'',type:"text",msg:'',cls:''},)
                     }
@@ -971,6 +928,7 @@ Page({
                         }
                     })
                   })
+
                   moveTo = res.data.length - addNum
                   that.setData({
                       msgList,
@@ -978,12 +936,25 @@ Page({
                     })
 
                 }
+
                   console.log('msgList',msgList,msgList.mis)
                 }
     
             })
         // }
-        callback&&callback(res)
+        if(that.data.share){
+                    console.log('share',res.data.roomid)
+                      callback&&callback(res)
+        }else{
+          console.log('share1',that.data.share,res.data.roomid)
+          $.alert('房间已经关闭，请重新创建!',function(){
+            wx.redirectTo({
+              url:'/pages/index/index'
+            })
+            wx.removeStorageSync('roomId')
+          })
+          clearInterval(that.b)
+        }
 
       }
     })
@@ -1230,112 +1201,29 @@ a(options){
                                       that.creatRoom(_location1,_location2,1,roomId,talkId1,talkId2,getApp().globalData.userInfo.avatarUrl,url_2)
                                   // })
                                 
+                      }else if(talkId1 != getApp().globalData.talkId && talkId2 != getApp().globalData.talkId &&( talkId1 != 0 || talkId2 !=0) ){
+                        console.log('第三人',talkId1,talkId2,getApp().globalData.talkId)
+                        var IsRoomFull = that.data.IsRoomFull
+                        console.log('IsRoomFull',IsRoomFull)
+                        if(!IsRoomFull){
+                          $.alert('房间邀请人数已满,即将返回首页',function(){
+                            wx.redirectTo({
+                              url:'/pages/index/index'
+                            })
+                            that.setData({
+                              IsRoomFull:true,
+                            })
+                          })
+                        }
                       }
-
-                      // if( (latlngjson[1].idCard == getApp().globalData.talkId) || (talkId1 != getApp().globalData.talkId && latlngjson[1].idCard == 0) ){
-                      //           var talkId2 = getApp().globalData.talkId
-                      //           // var _ulr = e.data.latlngjson[1].location2.headImgUrl
-                      //           that.getRoomInfo(roomId,function(res){
-                      //               console.log('牛郎',res)
-                      //               markers[0].latitude = res.data.latlngjson[0].location1[0].latitude
-                      //               markers[0].longitude = res.data.latlngjson[0].location1[0].longitude
-                      //               console.log( typeof res.data.latlngjson[1].location2)
-                      //               console.log(  res.data.latlngjson[1].location2)
-                      //               // res.data.latlngjson[1].location2 = JSON.parse(res.data.latlngjson[1].location2)
-
-                      //               res.data.latlngjson[1].location2[0].latitude = markers[1].latitude = latitude
-                      //               res.data.latlngjson[1].location2[0].longitude = markers[1].longitude  = longitude
-                      //               var _location1 = [{latitude:markers[0].latitude,longitude:markers[1].longitude}]
-                      //               var _location2 = [{latitude:latitude,longitude:longitude}]
-                      //               console.log(markers[1].latitude,markers[1].latitude )
-                                    
-                      //               if(markers[1].iconPath.length == 0){
-                      //                   getApp().saveFiles(url_1,function(res){
-                      //                   let markers = that.data.markers;
-                      //                   markers[1].iconPath = res.tempFilePath
-                      //                   that.setData({ markers })
-                      //                   })
-                      //               }
-                      //               that.setData({tips:false,invitation:true,roomState:true})
-                      //               // if(!polyline.length){
-                      //               //   var location1 = e.data.latlngjson[0].location1[0]
-                      //               //   var location2 = e.data.latlngjson[1].location2[0]
-                      //               //   that.walkRoute(location1,location2)
-                      //               // }
-                      //               that.creatRoom(_location1,_location2,1,op.roomId,talkId1,talkId2,url_1,getApp().globalData.userInfo.avatarUrl)
-                      //           })
-                                
-
-                      //       }
-                      // if(talkId1 == getApp().globalData.talkId && talkId2 != 0){
-                      //           // console.log('织女',res)
-                      //           var tips = that.data.tips
-                      //             if(tips){
-                      //               wx.showToast({
-                      //                 title: '邀请用户已接受',
-                      //                 icon: 'success',
-                      //                 duration: 2000
-                      //               })
-                      //             }
-                      //             // markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
-                      //             // markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
-                      //             that.getRoomInfo(roomId,function(res){
-                      //               console.log('织女',res.data.latlngjson[0].idCard,that.data.talkId1,getApp().globalData.talkId)
-                        
-                      //               // markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
-                      //               // markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
-                      //               markers[1].latitude = res.data.latlngjson[1].location2[0].latitude
-                      //               markers[1].longitude = res.data.latlngjson[1].location2[0].longitude
-
-                      //               // console.log( res.data.latlngjson[0].location1[0])
-                      //               // res.data.latlngjson[0].location1 = JSON.parse(res.data.latlngjson[0].location1)
-                      //               // console.log( 'typeof',  res.data.latlngjson[0].location1)
-                      //               // console.log(typeof res.data.latlngjson[0].location1)
-                      //               res.data.latlngjson[0].location1[0].latitude = markers[0].latitude = latitude
-                      //               res.data.latlngjson[0].location1[0].longitude = markers[0].longitude = longitude
-                      //               // console.log('1001',res.data.latlngjson[0].location1.latitude)
-                                    
-
-                      //               // var _location1 = JSON.stringify({latitude:latitude,longitude:longitude})
-                      //               // var _location2 = JSON.stringify({latitude:markers[1].latitude,longitude:markers[1].longitude})
-                      //               var _location1 = [{latitude:latitude,longitude:longitude}]
-                      //               var _location2 = [{latitude:markers[1].latitude,longitude:markers[1].longitude}]
-                      //               // console.log(_location1,_location2,1,roomId)
-
-                      //               // that.creatRoom(_location1,_location2,'1',roomId,that.data.talkId1,that.data.talkId2)
-                      //               // console.log('111',_location1,_location2,1,roomId,that.data.talkId1,that.data.talkId2)
-
-                      //               console.log('男的经纬度',res.data.latlngjson )
-                      //               if(markers[1].iconPath.length == 0){
-                      //                   getApp().saveFiles(url_2,function(res){
-                      //                   let markers = that.data.markers;
-                      //                   markers[1].iconPath = res.tempFilePath
-                      //                   that.setData({ markers })
-                      //                   console.log('织女',url_2)
-                      //                   console.log('黑',markers[1].iconPath.length)         
-                      //                           })
-                      //               }
-                      //               console.log('12345',polyline.length)
-                      //               // if(!polyline.length){
-                      //               //   var location1 = e.data.latlngjson[0].location1[0]
-                      //               //   var location2 = e.data.latlngjson[1].location2[0]
-                      //               //   that.walkRoute(location1,location2)
-                      //               // }
-                      //                 that.creatRoom(_location1,_location2,1,op.roomId,talkId1,talkId2,getApp().globalData.userInfo.avatarUrl,url_2)
-                      //             })
-                                
-                      // }
-
-
                       console.log('markers',that.data.markers)
-
                                                   })
-
                             }
                              
 },
 
   onLoad(options){
+    // $.alert('有人比你先到了哦!')
     var that = this
     var markers = that.data.markers
     var latitude = that.data.latitude
@@ -1347,7 +1235,7 @@ a(options){
     // var myAmapFun = new amapFile.AMapWX({key: '高德Key'});
 console.log('roomId',roomId,op)
       wx.showLoading({
-        title: '正在定位中···',
+        title: '正在定位',
       })
       that.mapCtx = wx.createMapContext('myMap')
       that.videoContext = wx.createVideoContext('myVideo')
@@ -1368,8 +1256,10 @@ console.log('roomId',roomId,op)
                 latitude,longitude
               })
               var Storage = wx.getStorageSync('roomId')
+              // console.log('Storage',Storage)
               if(op.roomId){
-              console.log('Storage',Storage)}
+              console.log('Storage',Storage)
+            }
               if(op.roomId || Storage){
                     share = true
                     if(op.roomId){
@@ -1380,7 +1270,7 @@ console.log('roomId',roomId,op)
                     }
 
                     that.setData({
-                    share:true,
+                    share:share,
                     roomId:op.roomId,
                     roomSort:1
                                 })
@@ -1435,8 +1325,10 @@ console.log('roomId',roomId,op)
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  wx.stopCompass()
-  clearInterval(that.b)
+    var that = this
+    wx.stopCompass()
+    wx.removeStorageSync('roomId')
+    clearInterval(that.b)
   },
 
   /**

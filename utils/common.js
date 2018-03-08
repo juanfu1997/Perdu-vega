@@ -73,15 +73,29 @@ String.prototype.find = function (str) {
     return false
 }
 
-function alert(s) {
+function alert(s,cb) {
     // 提示弹层
     wx.showModal({
         title: '提示',
         content: s,
         showCancel: false,
         success: function (res) {
-
+            cb&&cb()
         }
+    })
+}
+function modal(title,content,cb){
+    console.log('modal')
+    wx.showModal({
+      title: '',
+      content: content,
+      success: function(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
 }
 
@@ -285,5 +299,6 @@ module.exports = {
     goPage,
     saveFiles,
     adminUpload,
-    ranging
+    ranging,
+    modal
 }

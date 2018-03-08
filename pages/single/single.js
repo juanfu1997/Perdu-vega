@@ -48,7 +48,7 @@ Page({
     polyline:[],
     compass:'0',
     info:'0',
-    scale:18,
+    scale:19,
   
   },
   changeScale(e){
@@ -56,9 +56,9 @@ Page({
     var that = this
     var scale = that.data.scale
     var type = e.currentTarget.dataset.type
-    if(type == "big" && scale < 18){
+    if(type == "big" && scale <= 18 ){
       scale++
-    }else if(type == "small"){
+    }else if(type == "small" && scale >= 6){
       scale--
     }
     that.setData({scale})
@@ -223,18 +223,7 @@ Page({
           // callback()
         }
       })
-    // wx.getLocation({
-    //   type: 'gcj02', //返回可以用于wx.openLocation的经纬度
-    //   success: function(res) {
-    //     var latitude = res.latitude
-    //     var longitude = res.longitude
-    //     wx.openLocation({
-    //       latitude: latitude,
-    //       longitude: longitude,
-    //       scale: 28
-    //     })
-    //   }
-    // })
+    
   },
 
   /**

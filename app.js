@@ -131,21 +131,21 @@ App({
        }
       })
     }else{
-      _json =  JSON.stringify(_json)
-      // console.log(_json)
+      // _json =  JSON.stringify(_json)
+      // console.log(_json.id)
       wx.request({
         url:_url,
          data: {
-        id  : _json.id,
+            id  : _json.id,
         },
         // dataType: "json",
         header: {
          'content-type': 'application/x-www-form-urlencoded'
        },
-       method:'POST',
+       method:'GET',
        success:function(response){
         callback(response)
-        console.log('guanbiliaotian',response);
+        console.log('guanbiliaotian1',response,_json);
        }
       })
 
